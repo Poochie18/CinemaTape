@@ -1,0 +1,127 @@
+{
+  "watchedFilms": [
+    {
+      "id": 1,
+      "tmdbId": 550,
+      "title": "Бійцівський клуб",
+      "originalTitle": "Fight Club",
+      "poster": "https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg",
+      "posterSmall": "https://image.tmdb.org/t/p/w200/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg",
+      "year": 1999,
+      "overview": "Трилер про офісного працівника та мильного магната, які створюють підпільну організацію бійцівського клубу.",
+      "watchDate": "2025-01-10T12:00:00.000Z",
+      "rating": 10,
+      "note": "Шедевр Фінчера! Неймовірний твіст в кінці. Едвард Нортон та Бред Пітт в найкращих ролях."
+    },
+    {
+      "id": 2,
+      "tmdbId": 13,
+      "title": "Формен Грамп",
+      "originalTitle": "Forrest Gump",
+      "poster": "https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg",
+      "posterSmall": "https://image.tmdb.org/t/p/w200/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg",
+      "year": 1994,
+      "overview": "Історія життя простого чоловіка з Алабами, який став свідком та учасником ключових подій американської історії.",
+      "watchDate": "2025-01-08T18:00:00.000Z",
+      "rating": 9,
+      "note": "Плакав як дитина. Том Генкс - геній! Життя як коробка шоколадних цукерок 🍫"
+    },
+    {
+      "id": 3,
+      "tmdbId": 680,
+      "title": "Кримінальне чтиво",
+      "originalTitle": "Pulp Fiction",
+      "poster": "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
+      "posterSmall": "https://image.tmdb.org/t/p/w200/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
+      "year": 1994,
+      "overview": "Історії кримінального світу Лос-Анджелеса переплітаються в цьому культовому фільмі Тарантіно.",
+      "watchDate": "2025-01-05T20:00:00.000Z",
+      "rating": 10,
+      "note": "Тарантіно на піку форми. Діалоги - просто поезія. Перегляд №5 і все одно захоплює!"
+    },
+    {
+      "id": 4,
+      "tmdbId": 155,
+      "title": "Темний лицар",
+      "originalTitle": "The Dark Knight",
+      "poster": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+      "posterSmall": "https://image.tmdb.org/t/p/w200/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+      "year": 2008,
+      "overview": "Бетмен протистоїть Джокеру в битві за душу Готема.",
+      "watchDate": "2025-01-12T21:00:00.000Z",
+      "rating": 10,
+      "note": "Гіт Леджер - легенда. RIP. Найкращий супергеройський фільм всіх часів."
+    },
+    {
+      "id": 5,
+      "tmdbId": 424,
+      "title": "Список Шиндлера",
+      "originalTitle": "Schindler's List",
+      "poster": "https://image.tmdb.org/t/p/w500/sF1U4EUQS8YHUYjNl3pMGNIQyr0.jpg",
+      "posterSmall": "https://image.tmdb.org/t/p/w200/sF1U4EUQS8YHUYjNl3pMGNIQyr0.jpg",
+      "year": 1993,
+      "overview": "Реальна історія німецького бізнесмена, який врятував понад тисячу євреїв під час Голокосту.",
+      "watchDate": "2025-01-01T15:00:00.000Z",
+      "rating": 10,
+      "note": "Важко, але обов'язково до перегляду. Шедевр Спілберга про людяність."
+    }
+  ],
+  "watchLater": [
+    {
+      "id": 1,
+      "tmdbId": 27205,
+      "title": "Початок",
+      "originalTitle": "Inception",
+      "poster": "https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg",
+      "posterSmall": "https://image.tmdb.org/t/p/w200/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg",
+      "year": 2010,
+      "overview": "Злодій, який крадне корпоративні секрети через технологію спільних сновидінь.",
+      "addedAt": "2025-01-13T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "tmdbId": 278,
+      "title": "Втеча з Шоушенка",
+      "originalTitle": "The Shawshank Redemption",
+      "poster": "https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg",
+      "posterSmall": "https://image.tmdb.org/t/p/w200/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg",
+      "year": 1994,
+      "overview": "Двоє ув'язнених протягом років формують зв'язок, шукаючи втіху та можливість викупу.",
+      "addedAt": "2025-01-12T14:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "tmdbId": 238,
+      "title": "Хрещений батько",
+      "originalTitle": "The Godfather",
+      "poster": "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+      "posterSmall": "https://image.tmdb.org/t/p/w200/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+      "year": 1972,
+      "overview": "Стареючий патріарх організованої злочинної династії передає контроль своєму небажаючому сину.",
+      "addedAt": "2025-01-11T09:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "tmdbId": 497,
+      "title": "Зелена миля",
+      "originalTitle": "The Green Mile",
+      "poster": "https://image.tmdb.org/t/p/w500/velWPhVMQeQKcxggNEU8YmIo52R.jpg",
+      "posterSmall": "https://image.tmdb.org/t/p/w200/velWPhVMQeQKcxggNEU8YmIo52R.jpg",
+      "year": 1999,
+      "overview": "Історія про охоронця в'язниці та його взаємодію з дивовижним ув'язненим у камері смертників.",
+      "addedAt": "2025-01-10T16:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "tmdbId": 19404,
+      "title": "Дюнкерк",
+      "originalTitle": "Dunkirk",
+      "poster": "https://image.tmdb.org/t/p/w500/fudEG1VUWuOqleXv6NwCExK0VLy.jpg",
+      "posterSmall": "https://image.tmdb.org/t/p/w200/fudEG1VUWuOqleXv6NwCExK0VLy.jpg",
+      "year": 2017,
+      "overview": "Алієнтські солдати оточені ворожими силами. Їх єдина надія - на евакуацію.",
+      "addedAt": "2025-01-09T11:00:00.000Z"
+    }
+  ],
+  "exportDate": "2025-01-13T12:00:00.000Z"
+}
