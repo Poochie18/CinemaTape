@@ -3,10 +3,11 @@ import { format, startOfYear, endOfYear, eachMonthOfInterval, isSameMonth, start
 import { Film, Star, Calendar, TrendingUp, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export default function Statistics({ watchedFilms }) {
+export default function Statistics({ films = [] }) {
   const stats = useMemo(() => {
-    if (watchedFilms.length === 0) return null;
+    if (!films || films.length === 0) return null;
 
+    const watchedFilms = films;
     const currentYear = new Date().getFullYear();
     const filmsThisYear = watchedFilms.filter(
       (film) => new Date(film.watchDate).getFullYear() === currentYear
@@ -17,6 +18,7 @@ export default function Statistics({ watchedFilms }) {
     const avgRating = ratedFilms.length > 0
       ? (ratedFilms.reduce((sum, f) => sum + f.rating, 0) / ratedFilms.length).toFixed(1)
       : 0;
+    const ratedCount = ratedFilms.length;
 
     // Best rated
     const bestRated = [...watchedFilms]
@@ -52,11 +54,12 @@ export default function Statistics({ watchedFilms }) {
       total: watchedFilms.length,
       thisYear: filmsThisYear.length,
       avgRating,
+      ratedCount,
       bestRated,
       mostActiveDay,
       monthlyStats,
     };
-  }, [watchedFilms]);
+  }, [films]);
 
   if (!stats) {
     return (
@@ -110,8 +113,15 @@ export default function Statistics({ watchedFilms }) {
           className="glass rounded-xl p-6 text-center"
         >
           <Star className="w-8 h-8 mx-auto mb-2 text-yellow-400" />
-          <div className="text-3xl font-bold mb-1">{stats.avgRating}</div>
-          <div className="text-sm text-gray-400">Average Rating</div>
+          <div className="text-3xl font-bold mb-1">
+            {stats.avgRating > 0 ? stats.avgRating : '-'}
+          </div>
+          <div className="text-sm text-gray-400">
+            Average Rating
+            {stats.ratedCount > 0 && (
+              <span className="block text-xs mt-1">({stats.ratedCount} rated)</span>
+            )}
+          </div>
         </motion.div>
 
         <motion.div

@@ -4,53 +4,55 @@ import { Calendar as CalendarIcon, Save } from 'lucide-react';
 import Modal from './Modal';
 import StarRating from './StarRating';
 
-export default function AddMovieModal({ isOpen, onClose, onSave, defaultDate = new Date(), initialMovie = null, isEditing = false, isAddingToWatchLater = false }) {
+export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = null, editingFilm = null, isAddingToWatchLater = false }) {
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
-  const [watchDate, setWatchDate] = useState(format(defaultDate, 'yyyy-MM-dd'));
+  const [watchDate, setWatchDate] = useState(format(selectedDate || new Date(), 'yyyy-MM-dd'));
   const [rating, setRating] = useState(0);
   const [note, setNote] = useState('');
 
   // Load initial data when editing
   useEffect(() => {
-    if (isEditing && initialMovie) {
-      setTitle(initialMovie.title);
-      setYear(initialMovie.year?.toString() || '');
-      setWatchDate(format(new Date(initialMovie.watchDate), 'yyyy-MM-dd'));
-      setRating(initialMovie.rating || 0);
-      setNote(initialMovie.note || '');
-    } else if (!isEditing) {
+    if (editingFilm) {
+      setTitle(editingFilm.title || '');
+      setYear(editingFilm.year?.toString() || '');
+      setWatchDate(format(new Date(editingFilm.watchDate), 'yyyy-MM-dd'));
+      setRating(editingFilm.rating || 0);
+      setNote(editingFilm.note || '');
+    } else {
       setTitle('');
       setYear('');
-      setWatchDate(format(defaultDate, 'yyyy-MM-dd'));
+      setWatchDate(format(selectedDate || new Date(), 'yyyy-MM-dd'));
       setRating(0);
       setNote('');
     }
-  }, [isEditing, initialMovie, defaultDate, isOpen]);
+  }, [editingFilm, selectedDate, isOpen]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!title.trim()) return;
 
-    onSave({
+    const filmData = {
       title: title.trim(),
       year: year ? parseInt(year) : null,
-      watchDate: new Date(watchDate).toISOString(),
       rating,
-      note: note.trim(),
       poster: null,
-    });
+    };
 
-    // Reset form
-    setTitle('');
-    setYear('');
-    setWatchDate(format(defaultDate, 'yyyy-MM-dd'));
-    setRating(0);
-    setNote('');
+    if (!isAddingToWatchLater) {
+      filmData.watchDate = new Date(watchDate).toISOString();
+      filmData.note = note.trim();
+    }
+
+    if (editingFilm) {
+      filmData.id = editingFilm.id;
+    }
+
+    await onSave(filmData);
     onClose();
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={isAddingToWatchLater ? "Add to Watch Later" : (isEditing ? "Edit Movie" : "Add Movie")} size="md">
+    <Modal isOpen={isOpen} onClose={onClose} title={isAddingToWatchLater ? "Add to Watch Later" : (editingFilm ? "Edit Movie" : "Add Movie")} size="md">
       <div className="space-y-6">
         {/* Movie Title */}
         <div>

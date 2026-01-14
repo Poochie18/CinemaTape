@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -16,12 +17,26 @@ export default function Auth() {
 
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
+          options: {
+            emailRedirectTo: window.location.origin,
+            data: {
+              name: name.trim() || 'User',
+            },
+          },
         });
         if (error) throw error;
-        toast.success('Check your email to confirm registration!');
+        
+        // Check if email confirmation is required
+        if (data?.user?.identities?.length === 0) {
+          toast.error('This email is already registered. Please sign in instead.');
+        } else if (data?.user && !data?.session) {
+          toast.success('Check your email to confirm registration!');
+        } else {
+          toast.success('Account created! You are now signed in.');
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -31,7 +46,8 @@ export default function Auth() {
         toast.success('Signed in successfully!');
       }
     } catch (error) {
-      toast.error(error.message);
+      console.error('Auth error:', error);
+      toast.error(error.message || 'Authentication failed');
     } finally {
       setLoading(false);
     }
@@ -51,6 +67,22 @@ export default function Auth() {
 
         {/* Form */}
         <form onSubmit={handleAuth} className="space-y-4">
+          {/* Name (only for sign up) */}
+          {isSignUp && (
+            <div>
+              <label className="block text-sm font-medium mb-2">Name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Your name"
+                className="input-field"
+                required
+                disabled={loading}
+              />
+            </div>
+          )}
+
           {/* Email */}
           <div>
             <label className="block text-sm font-medium mb-2">Email</label>

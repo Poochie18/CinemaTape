@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 import { Calendar, Trash2, Edit2, Plus } from 'lucide-react';
 import StarRating from './StarRating';
+import ConfirmModal from './ConfirmModal';
 import toast from 'react-hot-toast';
 
 export default function DayFilms({ selectedDate, films, onAddClick, onDeleteFilm, onEditFilm }) {
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
+
   if (!selectedDate) {
     return (
       <div className="glass rounded-xl p-8 sm:p-12 text-center">
@@ -61,12 +65,7 @@ export default function DayFilms({ selectedDate, films, onAddClick, onDeleteFilm
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={() => {
-                      if (confirm(`Delete "${film.title}"?`)) {
-                        onDeleteFilm(film.id);
-                        toast.success('Movie deleted');
-                      }
-                    }}
+                    onClick={() => setDeleteConfirm(film)}
                     className="p-2 rounded-lg glass-hover text-red-400 hover:text-red-300 transition-all"
                     title="Delete"
                   >
@@ -103,6 +102,20 @@ export default function DayFilms({ selectedDate, films, onAddClick, onDeleteFilm
           ))}
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={!!deleteConfirm}
+        onClose={() => setDeleteConfirm(null)}
+        onConfirm={() => {
+          onDeleteFilm(deleteConfirm.id);
+          toast.success('Movie deleted');
+        }}
+        title="Delete Movie"
+        message={`Are you sure you want to delete "${deleteConfirm?.title}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+      />
     </div>
   );
 }

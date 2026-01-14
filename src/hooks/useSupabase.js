@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 
 export function useAuth() {
@@ -32,32 +32,9 @@ export function useWatchedFilms(userId) {
   const [films, setFilms] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!userId) {
-      setFilms([]);
-      setLoading(false);
-      return;
-    }
-
-    fetchFilms();
-
-    // Subscribe to realtime changes
-    const subscription = supabase
-      .channel('watched_films')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'watched_films',
-        filter: `user_id=eq.${userId}`
-      }, fetchFilms)
-      .subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [userId]);
-
-  const fetchFilms = async () => {
+  const fetchFilms = useCallback(async () => {
+    if (!userId) return;
+    
     const { data, error } = await supabase
       .from('watched_films')
       .select('*')
@@ -68,14 +45,7 @@ export function useWatchedFilms(userId) {
       setFilms(data || []);
     }
     setLoading(false);
-  };
-
-  return { films, loading, refetch: fetchFilms };
-}
-
-export function useWatchLater(userId) {
-  const [films, setFilms] = useState([]);
-  const [loading, setLoading] = useState(true);
+  }, [userId]);
 
   useEffect(() => {
     if (!userId) {
@@ -88,21 +58,30 @@ export function useWatchLater(userId) {
 
     // Subscribe to realtime changes
     const subscription = supabase
-      .channel('watch_later')
+      .channel(`watched_films_${userId}`)
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
-        table: 'watch_later',
+        table: 'watched_films',
         filter: `user_id=eq.${userId}`
-      }, fetchFilms)
+      }, () => fetchFilms())
       .subscribe();
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [userId]);
+  }, [userId, fetchFilms]);
 
-  const fetchFilms = async () => {
+  return { films, loading, refetch: fetchFilms };
+}
+
+export function useWatchLater(userId) {
+  const [films, setFilms] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchFilms = useCallback(async () => {
+    if (!userId) return;
+    
     const { data, error } = await supabase
       .from('watch_later')
       .select('*')
@@ -113,7 +92,32 @@ export function useWatchLater(userId) {
       setFilms(data || []);
     }
     setLoading(false);
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    if (!userId) {
+      setFilms([]);
+      setLoading(false);
+      return;
+    }
+
+    fetchFilms();
+
+    // Subscribe to realtime changes
+    const subscription = supabase
+      .channel(`watch_later_${userId}`)
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'watch_later',
+        filter: `user_id=eq.${userId}`
+      }, () => fetchFilms())
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [userId, fetchFilms]);
 
   return { films, loading, refetch: fetchFilms };
 }

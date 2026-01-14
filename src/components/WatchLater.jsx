@@ -1,21 +1,22 @@
-import { Film, Check, Trash2, Plus } from 'lucide-react';
+import { useState } from 'react';
+import { Film, Check, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
+import ConfirmModal from './ConfirmModal';
+import toast from 'react-hot-toast';
 
-export default function WatchLater({ films, onMarkAsWatched, onDelete, onAddClick }) {
+export default function WatchLater({ films, onMarkAsWatched, onDelete }) {
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
+
   if (films.length === 0) {
     return (
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
         <div className="glass rounded-xl p-12 text-center">
           <Film className="w-16 h-16 mx-auto text-gray-600 mb-4" />
           <h3 className="text-xl font-semibold mb-2">No movies in watch later</h3>
-          <p className="text-gray-400 mb-6">
-            Add movies you plan to watch
+          <p className="text-gray-400">
+            Add movies you plan to watch using the button above
           </p>
-          <button onClick={onAddClick} className="btn-primary">
-            <Plus className="w-5 h-5 inline mr-2" />
-            Add Movie
-          </button>
         </div>
       </div>
     );
@@ -23,19 +24,6 @@ export default function WatchLater({ films, onMarkAsWatched, onDelete, onAddClic
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-        <div>
-          <h2 className="text-2xl sm:text-3xl font-bold mb-2">Watch Later</h2>
-          <p className="text-sm sm:text-base text-gray-400">
-            {films.length} {films.length === 1 ? 'movie' : 'movies'} to watch
-          </p>
-        </div>
-        <button onClick={onAddClick} className="btn-primary w-full sm:w-auto">
-          <Plus className="w-5 h-5 inline mr-2" />
-          Add Movie
-        </button>
-      </div>
 
       {/* Movies List */}
       <div className="space-y-4">
@@ -73,11 +61,7 @@ export default function WatchLater({ films, onMarkAsWatched, onDelete, onAddClic
                     <Check className="w-5 h-5 text-green-500" />
                   </button>
                   <button
-                    onClick={() => {
-                      if (confirm(`Delete "${film.title}" from watch later?`)) {
-                        onDelete(film.id);
-                      }
-                    }}
+                    onClick={() => setDeleteConfirm(film)}
                     className="p-3 rounded-lg glass-hover text-red-400 hover:text-red-300 transition-all"
                     title="Delete"
                   >
@@ -89,6 +73,20 @@ export default function WatchLater({ films, onMarkAsWatched, onDelete, onAddClic
           </motion.div>
         ))}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={!!deleteConfirm}
+        onClose={() => setDeleteConfirm(null)}
+        onConfirm={() => {
+          onDelete(deleteConfirm.id);
+          toast.success('Removed from watch later');
+        }}
+        title="Remove from Watch Later"
+        message={`Are you sure you want to remove "${deleteConfirm?.title}" from your watch later list?`}
+        confirmText="Remove"
+        cancelText="Cancel"
+      />
     </div>
   );
 }

@@ -9,8 +9,9 @@ export default function MoveToWatchedModal({ isOpen, onClose, onSave, movie }) {
   const [rating, setRating] = useState(0);
   const [note, setNote] = useState(movie?.note || '');
 
-  const handleSave = () => {
-    onSave({
+  const handleSave = async () => {
+    await onSave({
+      id: movie.id,
       title: movie.title,
       year: movie.year || null,
       watchDate: new Date(watchDate).toISOString(),
@@ -18,11 +19,6 @@ export default function MoveToWatchedModal({ isOpen, onClose, onSave, movie }) {
       note: note.trim(),
       poster: null,
     });
-
-    // Reset form
-    setWatchDate(format(new Date(), 'yyyy-MM-dd'));
-    setRating(0);
-    setNote('');
     onClose();
   };
 

@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import toast from 'react-hot-toast';
-import { Film, Calendar as CalendarIcon, BarChart3, Plus, Clock } from 'lucide-react';
-import { isSameDay } from 'date-fns';
 import { supabase } from './lib/supabase';
 import { useWatchedFilms, useWatchLater } from './hooks/useSupabase';
-import Calendar from './components/Calendar';
-import DayFilms from './components/DayFilms';
-import Statistics from './components/Statistics';
-import WatchLater from './components/WatchLater';
-import AddMovieModal from './components/AddMovieModal';
-import MoveToWatchedModal from './components/MoveToWatchedModal';
+import Layout from './components/Layout';
+import SignIn from './pages/SignIn';
+import CalendarPage from './pages/CalendarPage';
+import WatchLaterPage from './pages/WatchLaterPage';
+import StatisticsPage from './pages/StatisticsPage';
 import LoadingSpinner from './components/LoadingSpinner';
-import { motion } from 'framer-motion';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -20,41 +17,13 @@ function App() {
   const { films: watchedFilmsData, loading: watchedLoading } = useWatchedFilms(user?.id);
   const { films: watchLaterData, loading: watchLaterLoading } = useWatchLater(user?.id);
 
-  const [activeTab, setActiveTab] = useState('calendar');
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [editingFilm, setEditingFilm] = useState(null);
-  const [isAddingToWatchLater, setIsAddingToWatchLater] = useState(false);
-  const [movingFilm, setMovingFilm] = useState(null);
-  const [showMoveModal, setShowMoveModal] = useState(false);
-
-  // Auto sign in anonymously
+  // Check auth session
   useEffect(() => {
-    const initAuth = async () => {
-      try {
-        // Check existing session
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (session?.user) {
-          setUser(session.user);
-        } else {
-          // Sign in anonymously if no session
-          const { data, error } = await supabase.auth.signInAnonymously();
-          if (error) throw error;
-          setUser(data.user);
-          toast.success('Connected to cloud storage!');
-        }
-      } catch (error) {
-        console.error('Auth error:', error);
-        toast.error('Failed to connect. Check your Supabase configuration.');
-      } finally {
-        setLoading(false);
-      }
-    };
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
 
-    initAuth();
-
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
@@ -85,6 +54,12 @@ function App() {
   const selectedDateFilms = selectedDate
     ? watchedFilms.filter((film) => isSameDay(new Date(film.watchDate), selectedDate))
     : [];
+
+  // Sign out handler
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    toast.success('Signed out successfully');
+  };
 
   // Add watched film
   const handleAddWatchedFilm = async (filmData) => {
@@ -196,11 +171,6 @@ function App() {
     }
   };
 
-  const handleSignOut = async () => {
-    await signOut();
-    toast.success('Signed out successfully');
-  };
-
   const tabs = [
     { id: 'calendar', label: 'Calendar', icon: CalendarIcon },
     { id: 'watchLater', label: 'Watch Later', icon: Clock },
@@ -228,12 +198,21 @@ function App() {
       {/* Header */}
       <header className="glass border-b border-gray-700/50 sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-center mb-4">
+          <div className="flex items-center justify-between mb-4">
             {/* Logo */}
             <div className="flex items-center gap-3">
               <Film className="w-8 h-8 text-gray-400" />
               <h1 className="text-2xl font-bold">CinemaTape</h1>
             </div>
+            
+            {/* Sign Out */}
+            <button
+              onClick={handleSignOut}
+              className="flex items-center gap-2 px-3 py-2 text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 rounded-lg transition-colors text-sm"
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Sign Out</span>
+            </button>
           </div>
 
           {/* Tabs */}
