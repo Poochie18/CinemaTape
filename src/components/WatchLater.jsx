@@ -3,7 +3,6 @@ import { Film, Check, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 import ConfirmModal from './ConfirmModal';
-import toast from 'react-hot-toast';
 
 export default function WatchLater({ films, onMarkAsWatched, onDelete }) {
   const [deleteConfirm, setDeleteConfirm] = useState(null);
@@ -36,38 +35,38 @@ export default function WatchLater({ films, onMarkAsWatched, onDelete }) {
             className="glass rounded-xl overflow-hidden hover:border-gray-600 transition-all"
           >
             <div className="p-4 sm:p-6">
-              <div className="flex flex-col sm:flex-row gap-4 items-start">
-                {/* Movie Info */}
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-lg sm:text-xl font-bold mb-2">{film.title}</h4>
-                  {film.year && (
-                    <p className="text-gray-500 text-sm mb-2">{film.year}</p>
-                  )}
-                  {film.rating > 0 && (
-                    <p className="text-sm text-yellow-400 mb-2">★ {film.rating}/10</p>
-                  )}
-                  <p className="text-xs text-gray-500">
-                    Added {format(new Date(film.addedDate), 'MMM d, yyyy')}
-                  </p>
-                </div>
-
-                {/* Actions */}
-                <div className="flex gap-2">
+              {/* Title and Actions Row */}
+              <div className="flex items-start justify-between gap-3 mb-3">
+                <h4 className="text-lg sm:text-xl font-bold flex-1 break-words pr-2">{film.title}</h4>
+                <div className="flex gap-2 flex-shrink-0">
                   <button
                     onClick={() => onMarkAsWatched(film)}
-                    className="p-3 rounded-lg bg-green-600/20 hover:bg-green-600/30 border border-green-600/50 transition-all"
+                    className="p-2 sm:p-3 rounded-lg bg-green-600/20 hover:bg-green-600/30 border border-green-600/50 transition-all"
                     title="Mark as Watched"
                   >
-                    <Check className="w-5 h-5 text-green-500" />
+                    <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
                   </button>
                   <button
                     onClick={() => setDeleteConfirm(film)}
-                    className="p-3 rounded-lg glass-hover text-red-400 hover:text-red-300 transition-all"
+                    className="p-2 sm:p-3 rounded-lg glass-hover text-red-400 hover:text-red-300 transition-all"
                     title="Delete"
                   >
-                    <Trash2 className="w-5 h-5" />
+                    <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                 </div>
+              </div>
+              
+              {/* Movie Details */}
+              <div className="space-y-2">
+                {film.year && (
+                  <p className="text-gray-500 text-sm">{film.year}</p>
+                )}
+                {film.rating > 0 && (
+                  <p className="text-sm text-yellow-400">★ {film.rating}/10</p>
+                )}
+                <p className="text-xs text-gray-500">
+                  Added {format(new Date(film.addedDate), 'MMM d, yyyy')}
+                </p>
               </div>
             </div>
           </motion.div>
@@ -80,7 +79,7 @@ export default function WatchLater({ films, onMarkAsWatched, onDelete }) {
         onClose={() => setDeleteConfirm(null)}
         onConfirm={() => {
           onDelete(deleteConfirm.id);
-          toast.success('Removed from watch later');
+          setDeleteConfirm(null);
         }}
         title="Remove from Watch Later"
         message={`Are you sure you want to remove "${deleteConfirm?.title}" from your watch later list?`}

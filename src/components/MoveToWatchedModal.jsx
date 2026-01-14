@@ -80,7 +80,7 @@ export default function MoveToWatchedModal({ isOpen, onClose, onSave, movie }) {
           </button>
           <button 
             onClick={handleSave} 
-            className="btn-primary flex items-center justify-center gap-2 w-full sm:w-auto"
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 w-full sm:w-auto"
           >
             <Save className="w-5 h-5" />
             Save as Watched

@@ -66,7 +66,7 @@ export default function Layout() {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute right-0 mt-2 w-48 glass rounded-lg shadow-xl border border-gray-700/50 overflow-hidden z-50"
+                    className="absolute right-0 mt-2 w-48 bg-gray-900/95 backdrop-blur-xl rounded-lg shadow-xl border border-gray-700/50 overflow-hidden z-50"
                   >
                     <button
                       onClick={() => {

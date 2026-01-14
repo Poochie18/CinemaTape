@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Calendar, Trash2, Edit2, Plus } from 'lucide-react';
 import StarRating from './StarRating';
 import ConfirmModal from './ConfirmModal';
-import toast from 'react-hot-toast';
 
 export default function DayFilms({ selectedDate, films, onAddClick, onDeleteFilm, onEditFilm }) {
   const [deleteConfirm, setDeleteConfirm] = useState(null);
@@ -109,7 +108,7 @@ export default function DayFilms({ selectedDate, films, onAddClick, onDeleteFilm
         onClose={() => setDeleteConfirm(null)}
         onConfirm={() => {
           onDeleteFilm(deleteConfirm.id);
-          toast.success('Movie deleted');
+          setDeleteConfirm(null);
         }}
         title="Delete Movie"
         message={`Are you sure you want to delete "${deleteConfirm?.title}"? This action cannot be undone.`}

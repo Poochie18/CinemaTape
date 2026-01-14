@@ -55,21 +55,6 @@ export function useWatchedFilms(userId) {
     }
 
     fetchFilms();
-
-    // Subscribe to realtime changes
-    const subscription = supabase
-      .channel(`watched_films_${userId}`)
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'watched_films',
-        filter: `user_id=eq.${userId}`
-      }, () => fetchFilms())
-      .subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-    };
   }, [userId, fetchFilms]);
 
   return { films, loading, refetch: fetchFilms };
@@ -102,21 +87,6 @@ export function useWatchLater(userId) {
     }
 
     fetchFilms();
-
-    // Subscribe to realtime changes
-    const subscription = supabase
-      .channel(`watch_later_${userId}`)
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'watch_later',
-        filter: `user_id=eq.${userId}`
-      }, () => fetchFilms())
-      .subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-    };
   }, [userId, fetchFilms]);
 
   return { films, loading, refetch: fetchFilms };

@@ -1,9 +1,18 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { format, startOfYear, endOfYear, eachMonthOfInterval, isSameMonth, startOfMonth, endOfMonth } from 'date-fns';
-import { Film, Star, Calendar, TrendingUp, Award } from 'lucide-react';
+import { Film, Star, Calendar, TrendingUp, Award, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Statistics({ films = [] }) {
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+
+  const availableYears = useMemo(() => {
+    if (!films || films.length === 0) return [new Date().getFullYear()];
+    const years = films.map(f => new Date(f.watchDate).getFullYear());
+    const uniqueYears = [...new Set(years)].sort((a, b) => b - a);
+    return uniqueYears.length > 0 ? uniqueYears : [new Date().getFullYear()];
+  }, [films]);
+
   const stats = useMemo(() => {
     if (!films || films.length === 0) return null;
 
@@ -11,6 +20,10 @@ export default function Statistics({ films = [] }) {
     const currentYear = new Date().getFullYear();
     const filmsThisYear = watchedFilms.filter(
       (film) => new Date(film.watchDate).getFullYear() === currentYear
+    );
+
+    const filmsSelectedYear = watchedFilms.filter(
+      (film) => new Date(film.watchDate).getFullYear() === selectedYear
     );
 
     // Average rating
@@ -34,18 +47,18 @@ export default function Statistics({ films = [] }) {
     });
     const mostActiveDay = Object.entries(daysCounts).sort((a, b) => b[1] - a[1])[0];
 
-    // Monthly stats for current year
+    // Monthly stats for selected year
     const months = eachMonthOfInterval({
-      start: startOfYear(new Date()),
-      end: endOfYear(new Date()),
+      start: startOfYear(new Date(selectedYear, 0, 1)),
+      end: endOfYear(new Date(selectedYear, 0, 1)),
     });
 
     const monthlyStats = months.map((month) => {
-      const filmsInMonth = watchedFilms.filter((film) =>
+      const filmsInMonth = filmsSelectedYear.filter((film) =>
         isSameMonth(new Date(film.watchDate), month)
       );
       return {
-        month: format(month, 'LLLL'),
+        month: format(month, 'MMM'),
         count: filmsInMonth.length,
       };
     });
@@ -53,13 +66,14 @@ export default function Statistics({ films = [] }) {
     return {
       total: watchedFilms.length,
       thisYear: filmsThisYear.length,
+      selectedYearCount: filmsSelectedYear.length,
       avgRating,
       ratedCount,
       bestRated,
       mostActiveDay,
       monthlyStats,
     };
-  }, [films]);
+  }, [films, selectedYear]);
 
   if (!stats) {
     return (
@@ -143,37 +157,60 @@ export default function Statistics({ films = [] }) {
         transition={{ delay: 0.4 }}
         className="glass rounded-xl p-6"
       >
-        <h3 className="text-xl font-bold mb-6">Movies by Month ({new Date().getFullYear()})</h3>
-        <div className="space-y-4">
+        {/* Year Selector */}
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold">
+            Movies by Month
+          </h3>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                const currentIndex = availableYears.indexOf(selectedYear);
+                if (currentIndex < availableYears.length - 1) {
+                  setSelectedYear(availableYears[currentIndex + 1]);
+                }
+              }}
+              disabled={availableYears.indexOf(selectedYear) === availableYears.length - 1}
+              className="p-2 glass-hover rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <span className="text-lg font-bold px-4">{selectedYear}</span>
+            <button
+              onClick={() => {
+                const currentIndex = availableYears.indexOf(selectedYear);
+                if (currentIndex > 0) {
+                  setSelectedYear(availableYears[currentIndex - 1]);
+                }
+              }}
+              disabled={availableYears.indexOf(selectedYear) === 0}
+              className="p-2 glass-hover rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+        
+        <div className="space-y-3">
           {stats.monthlyStats.map((month, index) => {
             const maxCount = Math.max(...stats.monthlyStats.map(m => m.count), 1);
             const percentage = (month.count / maxCount) * 100;
             return (
-              <div key={month.month} className="flex items-center gap-4">
-                <div className="w-24 text-sm text-gray-300 capitalize font-medium">
-                  {month.month.substring(0, 3)}
+              <div key={month.month} className="flex items-center gap-3">
+                <div className="w-12 text-sm text-gray-400 font-medium text-right">
+                  {month.month}
                 </div>
-                <div className="flex-1 flex items-center gap-3">
-                  <div className="flex-1 h-10 bg-gray-800/50 rounded-lg overflow-hidden relative border border-gray-700/50">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${percentage}%` }}
-                      transition={{ delay: 0.5 + index * 0.05, duration: 0.6, ease: "easeOut" }}
-                      className="h-full bg-gradient-to-r from-gray-600 to-gray-700 flex items-center justify-end px-3 relative"
-                      style={{
-                        boxShadow: month.count > 0 ? '0 0 10px rgba(156, 163, 175, 0.3)' : 'none'
-                      }}
-                    >
-                      {month.count > 0 && (
-                        <span className="text-sm font-bold text-white">{month.count}</span>
-                      )}
-                    </motion.div>
-                  </div>
-                  <div className="w-10 text-right">
+                <div className="flex-1 h-8 bg-gray-800/30 rounded-lg overflow-hidden relative">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${percentage}%` }}
+                    transition={{ delay: 0.1 + index * 0.03, duration: 0.5, ease: "easeOut" }}
+                    className="h-full bg-gradient-to-r from-blue-600/80 to-blue-500/80 flex items-center justify-end px-3"
+                  >
                     {month.count > 0 && (
-                      <span className="text-xs text-gray-500">{Math.round(percentage)}%</span>
+                      <span className="text-sm font-semibold text-white drop-shadow-lg">{month.count}</span>
                     )}
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             );

@@ -86,9 +86,9 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
           <label className="block text-sm font-medium mb-2">
             Rating (0-10)
           </label>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
             <StarRating rating={rating} onRatingChange={setRating} />
-            <span className="text-2xl font-bold text-yellow-400">{rating}/10</span>
+            <span className="text-xl sm:text-2xl font-bold text-yellow-400">{rating}/10</span>
           </div>
         </div>
 
@@ -117,10 +117,14 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
             </label>
             <textarea
               value={note}
-              onChange={(e) => setNote(e.target.value)}
+              onChange={(e) => {
+                setNote(e.target.value);
+                e.target.style.height = 'auto';
+                e.target.style.height = e.target.scrollHeight + 'px';
+              }}
               placeholder="Your thoughts about the movie..."
-              className="input-field min-h-32 resize-none"
-              rows={4}
+              className="input-field resize-none"
+              rows={1}
             />
           </div>
         )}
@@ -132,7 +136,7 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
           </button>
           <button 
             onClick={handleSave} 
-            className="btn-primary flex items-center justify-center gap-2 w-full sm:w-auto"
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={!title.trim()}
           >
             <Save className="w-5 h-5" />

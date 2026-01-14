@@ -35,12 +35,12 @@ export default function Modal({ isOpen, onClose, children, title, size = 'md' })
           />
 
           {/* Modal */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className={`glass rounded-2xl ${sizeClasses[size]} w-full max-h-[90vh] overflow-y-auto relative`}
+              className={`glass rounded-2xl ${sizeClasses[size]} w-full max-h-[90vh] flex flex-col relative`}
             >
               {/* Header */}
               {title && (
@@ -56,7 +56,7 @@ export default function Modal({ isOpen, onClose, children, title, size = 'md' })
               )}
 
               {/* Content */}
-              <div className="p-6">
+              <div className="p-6 overflow-y-auto">
                 {children}
               </div>
             </motion.div>
