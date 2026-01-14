@@ -2,17 +2,23 @@
 <html lang="uk">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/CinemaTape/film.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CinemaTape</title>
+    <title>CinemaTape - Redirecting...</title>
     <script>
       // GitHub Pages SPA redirect fix
-      // Store the path and redirect to index.html
-      sessionStorage.redirect = location.href;
+      // Redirect to index.html with path info
+      var pathSegmentsToKeep = 1; // for /CinemaTape/
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
     </script>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/CinemaTape/src/main.jsx"></script>
+    <p>Redirecting...</p>
   </body>
 </html>
