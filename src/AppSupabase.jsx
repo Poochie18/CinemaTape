@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import toast from 'react-hot-toast';
-import { Film, Calendar as CalendarIcon, BarChart3, Plus, Clock, LogOut } from 'lucide-react';
+import { Film, Calendar as CalendarIcon, BarChart3, Plus, Clock } from 'lucide-react';
 import { isSameDay } from 'date-fns';
 import { supabase } from './lib/supabase';
-import { useAuth, useWatchedFilms, useWatchLater } from './hooks/useSupabase';
-import Auth from './components/Auth';
+import { useWatchedFilms, useWatchLater } from './hooks/useSupabase';
 import Calendar from './components/Calendar';
 import DayFilms from './components/DayFilms';
 import Statistics from './components/Statistics';
@@ -16,7 +15,8 @@ import LoadingSpinner from './components/LoadingSpinner';
 import { motion } from 'framer-motion';
 
 function App() {
-  const { user, loading: authLoading, signOut } = useAuth();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const { films: watchedFilmsData, loading: watchedLoading } = useWatchedFilms(user?.id);
   const { films: watchLaterData, loading: watchLaterLoading } = useWatchLater(user?.id);
 
@@ -28,14 +28,39 @@ function App() {
   const [movingFilm, setMovingFilm] = useState(null);
   const [showMoveModal, setShowMoveModal] = useState(false);
 
-  // Show auth screen if not authenticated
-  if (authLoading) {
-    return <LoadingSpinner fullScreen />;
-  }
+  // Auto sign in anonymously
+  useEffect(() => {
+    const initAuth = async () => {
+      try {
+        // Check existing session
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session?.user) {
+          setUser(session.user);
+        } else {
+          // Sign in anonymously if no session
+          const { data, error } = await supabase.auth.signInAnonymously();
+          if (error) throw error;
+          setUser(data.user);
+          toast.success('Connected to cloud storage!');
+        }
+      } catch (error) {
+        console.error('Auth error:', error);
+        toast.error('Failed to connect. Check your Supabase configuration.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!user) {
-    return <Auth />;
-  }
+    initAuth();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   // Convert Supabase data format to match local format
   const watchedFilms = watchedFilmsData.map(film => ({
@@ -182,7 +207,7 @@ function App() {
     { id: 'stats', label: 'Statistics', icon: BarChart3 },
   ];
 
-  if (watchedLoading || watchLaterLoading) {
+  if (loading || watchedLoading || watchLaterLoading) {
     return <LoadingSpinner fullScreen />;
   }
 
@@ -203,22 +228,12 @@ function App() {
       {/* Header */}
       <header className="glass border-b border-gray-700/50 sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-center mb-4">
             {/* Logo */}
             <div className="flex items-center gap-3">
               <Film className="w-8 h-8 text-gray-400" />
               <h1 className="text-2xl font-bold">CinemaTape</h1>
             </div>
-
-            {/* User & Sign Out */}
-            <button
-              onClick={handleSignOut}
-              className="flex items-center gap-2 px-4 py-2 glass-hover rounded-lg text-sm"
-              title="Sign Out"
-            >
-              <span className="hidden sm:inline text-gray-400">{user.email}</span>
-              <LogOut className="w-5 h-5" />
-            </button>
           </div>
 
           {/* Tabs */}
