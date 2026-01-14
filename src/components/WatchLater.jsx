@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Film, Check, Trash2 } from 'lucide-react';
+import { Film, Check, Trash2, Pencil } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 import ConfirmModal from './ConfirmModal';
 
-export default function WatchLater({ films, onMarkAsWatched, onDelete }) {
+export default function WatchLater({ films, onMarkAsWatched, onDelete, onEdit }) {
   const [deleteConfirm, setDeleteConfirm] = useState(null);
 
   if (films.length === 0) {
@@ -39,6 +39,13 @@ export default function WatchLater({ films, onMarkAsWatched, onDelete }) {
               <div className="flex items-start justify-between gap-3 mb-3">
                 <h4 className="text-lg sm:text-xl font-bold flex-1 break-words pr-2">{film.title}</h4>
                 <div className="flex gap-2 flex-shrink-0">
+                  <button
+                    onClick={() => onEdit(film)}
+                    className="p-2 sm:p-3 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 border border-blue-600/50 transition-all"
+                    title="Edit"
+                  >
+                    <Pencil className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+                  </button>
                   <button
                     onClick={() => onMarkAsWatched(film)}
                     className="p-2 sm:p-3 rounded-lg bg-green-600/20 hover:bg-green-600/30 border border-green-600/50 transition-all"

@@ -24,17 +24,17 @@ export default function AllMovies({ films, onEditFilm, onDeleteFilm }) {
               <div className="absolute top-4 right-4 flex gap-2 z-10">
                 <button
                   onClick={() => onEditFilm(film)}
-                  className="p-2 rounded-lg glass-hover transition-all"
+                  className="p-2 sm:p-3 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 border border-blue-600/50 transition-all"
                   title="Edit"
                 >
-                  <Edit2 className="w-4 h-4" />
+                  <Edit2 className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
                 </button>
                 <button
                   onClick={() => setDeleteConfirm(film)}
-                  className="p-2 rounded-lg glass-hover text-red-400 hover:text-red-300 transition-all"
+                  className="p-2 sm:p-3 rounded-lg glass-hover text-red-400 hover:text-red-300 transition-all"
                   title="Delete"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
               </div>
 

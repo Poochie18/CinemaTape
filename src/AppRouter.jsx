@@ -126,6 +126,24 @@ function App() {
     }
   };
 
+  // Update watch later film
+  const handleUpdateWatchLater = async (filmData) => {
+    try {
+      const { error } = await supabase.from('watch_later').update({
+        title: filmData.title,
+        year: filmData.year,
+        rating: filmData.rating
+      }).eq('id', filmData.id);
+
+      if (error) throw error;
+      await refetchWatchLater();
+      toast.success('Movie updated');
+    } catch (error) {
+      toast.error('Error updating movie');
+      console.error(error);
+    }
+  };
+
   // Delete from watch later
   const handleDeleteFromWatchLater = async (id) => {
     try {
@@ -212,6 +230,7 @@ function App() {
                 <WatchLaterPage
                   watchLaterFilms={watchLaterFilms}
                   onAddToWatchLater={handleAddToWatchLater}
+                  onUpdateWatchLater={handleUpdateWatchLater}
                   onDeleteFromWatchLater={handleDeleteFromWatchLater}
                   onMoveToWatched={handleMoveToWatched}
                 />

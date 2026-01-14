@@ -16,7 +16,12 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
     if (editingFilm) {
       setTitle(editingFilm.title || '');
       setYear(editingFilm.year?.toString() || '');
-      setWatchDate(format(new Date(editingFilm.watchDate), 'yyyy-MM-dd'));
+      // For watch later films, watchDate might not exist
+      if (editingFilm.watchDate) {
+        setWatchDate(format(new Date(editingFilm.watchDate), 'yyyy-MM-dd'));
+      } else {
+        setWatchDate(format(selectedDate || new Date(), 'yyyy-MM-dd'));
+      }
       setRating(editingFilm.rating || 0);
       setNote(editingFilm.note || '');
     } else {
