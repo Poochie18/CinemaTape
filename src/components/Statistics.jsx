@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import { format, startOfYear, endOfYear, eachMonthOfInterval, isSameMonth, startOfMonth, endOfMonth } from 'date-fns';
-import { Film, Star, Calendar, TrendingUp, Award, ChevronLeft, ChevronRight } from 'lucide-react';
+import { format, startOfYear, endOfYear, eachMonthOfInterval, isSameMonth, startOfMonth, endOfMonth, differenceInDays, parseISO } from 'date-fns';
+import { Film, Star, TrendingUp, Award, ChevronLeft, ChevronRight, Flame } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Statistics({ films = [] }) {
@@ -25,6 +25,30 @@ export default function Statistics({ films = [] }) {
     const filmsSelectedYear = watchedFilms.filter(
       (film) => new Date(film.watchDate).getFullYear() === selectedYear
     );
+
+    // Calculate longest streak
+    const uniqueDates = [...new Set(watchedFilms.map(f => format(new Date(f.watchDate), 'yyyy-MM-dd')))]
+      .sort();
+    
+    let maxStreak = 0;
+    let currentStreak = 0;
+    
+    for (let i = 0; i < uniqueDates.length; i++) {
+      if (i === 0) {
+        currentStreak = 1;
+      } else {
+        const prevDate = parseISO(uniqueDates[i - 1]);
+        const currentDate = parseISO(uniqueDates[i]);
+        const daysDiff = differenceInDays(currentDate, prevDate);
+        
+        if (daysDiff === 1) {
+          currentStreak++;
+        } else {
+          currentStreak = 1;
+        }
+      }
+      maxStreak = Math.max(maxStreak, currentStreak);
+    }
 
     // Average rating
     const ratedFilms = watchedFilms.filter((f) => f.rating > 0);
@@ -65,7 +89,7 @@ export default function Statistics({ films = [] }) {
 
     return {
       total: watchedFilms.length,
-      thisYear: filmsThisYear.length,
+      longestStreak: maxStreak,
       selectedYearCount: filmsSelectedYear.length,
       avgRating,
       ratedCount,
@@ -115,9 +139,9 @@ export default function Statistics({ films = [] }) {
           transition={{ delay: 0.1 }}
           className="glass rounded-xl p-6 text-center"
         >
-          <Calendar className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-          <div className="text-3xl font-bold mb-1">{stats.thisYear}</div>
-          <div className="text-sm text-gray-400">This Year</div>
+          <Flame className="w-8 h-8 mx-auto mb-2 text-orange-400" />
+          <div className="text-3xl font-bold mb-1">{stats.longestStreak}</div>
+          <div className="text-sm text-gray-400">Longest Streak</div>
         </motion.div>
 
         <motion.div
