@@ -29,7 +29,16 @@ export function useAuth() {
 }
 
 export function useWatchedFilms(userId) {
-  const [films, setFilms] = useState([]);
+  const [films, setFilms] = useState(() => {
+    // Load from cache immediately on mount
+    if (!userId) return [];
+    try {
+      const cached = localStorage.getItem(`watched_films_${userId}`);
+      return cached ? JSON.parse(cached) : [];
+    } catch {
+      return [];
+    }
+  });
   const [loading, setLoading] = useState(true);
 
   const fetchFilms = useCallback(async () => {
@@ -41,8 +50,14 @@ export function useWatchedFilms(userId) {
       .eq('user_id', userId)
       .order('watch_date', { ascending: false });
 
-    if (!error) {
-      setFilms(data || []);
+    if (!error && data) {
+      setFilms(data);
+      // Cache the data
+      try {
+        localStorage.setItem(`watched_films_${userId}`, JSON.stringify(data));
+      } catch (e) {
+        console.error('Failed to cache data:', e);
+      }
     }
     setLoading(false);
   }, [userId]);
@@ -55,13 +70,37 @@ export function useWatchedFilms(userId) {
     }
 
     fetchFilms();
+
+    // Subscribe to realtime changes
+    const subscription = supabase
+      .channel(`watched_films_${userId}`)
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'watched_films',
+        filter: `user_id=eq.${userId}`
+      }, () => fetchFilms())
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [userId, fetchFilms]);
 
   return { films, loading, refetch: fetchFilms };
 }
 
 export function useWatchLater(userId) {
-  const [films, setFilms] = useState([]);
+  const [films, setFilms] = useState(() => {
+    // Load from cache immediately on mount
+    if (!userId) return [];
+    try {
+      const cached = localStorage.getItem(`watch_later_${userId}`);
+      return cached ? JSON.parse(cached) : [];
+    } catch {
+      return [];
+    }
+  });
   const [loading, setLoading] = useState(true);
 
   const fetchFilms = useCallback(async () => {
@@ -73,8 +112,14 @@ export function useWatchLater(userId) {
       .eq('user_id', userId)
       .order('added_date', { ascending: false });
 
-    if (!error) {
-      setFilms(data || []);
+    if (!error && data) {
+      setFilms(data);
+      // Cache the data
+      try {
+        localStorage.setItem(`watch_later_${userId}`, JSON.stringify(data));
+      } catch (e) {
+        console.error('Failed to cache data:', e);
+      }
     }
     setLoading(false);
   }, [userId]);
@@ -87,6 +132,21 @@ export function useWatchLater(userId) {
     }
 
     fetchFilms();
+
+    // Subscribe to realtime changes
+    const subscription = supabase
+      .channel(`watch_later_${userId}`)
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'watch_later',
+        filter: `user_id=eq.${userId}`
+      }, () => fetchFilms())
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [userId, fetchFilms]);
 
   return { films, loading, refetch: fetchFilms };
