@@ -34,7 +34,7 @@ export default function Layout() {
 
   const navItems = [
     { path: '/calendar', label: 'Calendar', icon: CalendarIcon },
-    { path: '/watchlater', label: 'Watch Later', icon: Clock },
+    { path: '/watchlater', label: 'Later', icon: Clock },
     { path: '/statistics', label: 'Statistics', icon: BarChart3 },
   ];
 

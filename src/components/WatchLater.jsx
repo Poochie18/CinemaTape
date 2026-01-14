@@ -12,7 +12,7 @@ export default function WatchLater({ films, onMarkAsWatched, onDelete }) {
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
         <div className="glass rounded-xl p-12 text-center">
           <Film className="w-16 h-16 mx-auto text-gray-600 mb-4" />
-          <h3 className="text-xl font-semibold mb-2">No movies in watch later</h3>
+          <h3 className="text-xl font-semibold mb-2">No movies in later</h3>
           <p className="text-gray-400">
             Add movies you plan to watch using the button above
           </p>
@@ -81,8 +81,8 @@ export default function WatchLater({ films, onMarkAsWatched, onDelete }) {
           onDelete(deleteConfirm.id);
           setDeleteConfirm(null);
         }}
-        title="Remove from Watch Later"
-        message={`Are you sure you want to remove "${deleteConfirm?.title}" from your watch later list?`}
+        title="Remove from Later"
+        message={`Are you sure you want to remove "${deleteConfirm?.title}" from your later list?`}
         confirmText="Remove"
         cancelText="Cancel"
       />

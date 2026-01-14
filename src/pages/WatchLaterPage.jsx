@@ -30,7 +30,7 @@ export default function WatchLaterPage({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Watch Later</h2>
+          <h2 className="text-2xl font-bold">Later</h2>
           <p className="text-gray-400 text-sm mt-1">
             {watchLaterFilms.length} {watchLaterFilms.length === 1 ? 'film' : 'films'} in queue
           </p>

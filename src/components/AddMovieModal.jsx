@@ -52,7 +52,7 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={isAddingToWatchLater ? "Add to Watch Later" : (editingFilm ? "Edit Movie" : "Add Movie")} size="md">
+    <Modal isOpen={isOpen} onClose={onClose} title={isAddingToWatchLater ? "Add to Later" : (editingFilm ? "Edit Movie" : "Add Movie")} size="md">
       <div className="space-y-6">
         {/* Movie Title */}
         <div>
