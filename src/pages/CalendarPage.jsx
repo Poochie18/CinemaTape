@@ -31,7 +31,7 @@ export default function CalendarPage({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 space-y-8">
       <Calendar
         selectedDate={selectedDate}
         onSelectDate={setSelectedDate}

@@ -9,7 +9,7 @@ export default function WatchLater({ films, onMarkAsWatched, onDelete }) {
 
   if (films.length === 0) {
     return (
-      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
+      <div className="w-full">
         <div className="glass rounded-xl p-12 text-center">
           <Film className="w-16 h-16 mx-auto text-gray-600 mb-4" />
           <h3 className="text-xl font-semibold mb-2">No movies in later</h3>
@@ -22,7 +22,7 @@ export default function WatchLater({ films, onMarkAsWatched, onDelete }) {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
+    <div className="w-full">
 
       {/* Movies List */}
       <div className="space-y-4">

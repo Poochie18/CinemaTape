@@ -34,7 +34,7 @@ export default function Calendar({ selectedDate, onSelectDate, watchedFilms }) {
   const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6">
+    <div className="w-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <button
