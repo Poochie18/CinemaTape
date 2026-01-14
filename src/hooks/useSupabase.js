@@ -110,6 +110,7 @@ export function useWatchLater(userId) {
       .from('watch_later')
       .select('*')
       .eq('user_id', userId)
+      .order('rating', { ascending: false })
       .order('added_date', { ascending: false });
 
     if (!error && data) {

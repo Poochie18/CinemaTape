@@ -84,7 +84,7 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
         {/* Rating */}
         <div>
           <label className="block text-sm font-medium mb-2">
-            Rating (0-10)
+            {isAddingToWatchLater ? 'Priority (0-10)' : 'Rating (0-10)'}
           </label>
           <div className="flex flex-wrap items-center gap-2 sm:gap-4">
             <StarRating rating={rating} onRatingChange={setRating} />

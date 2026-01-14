@@ -57,16 +57,16 @@ export default function WatchLater({ films, onMarkAsWatched, onDelete }) {
               </div>
               
               {/* Movie Details */}
-              <div className="space-y-2">
+              <div className="flex items-center gap-3 text-sm text-gray-500 flex-wrap">
                 {film.year && (
-                  <p className="text-gray-500 text-sm">{film.year}</p>
+                  <span>{film.year}</span>
                 )}
                 {film.rating > 0 && (
-                  <p className="text-sm text-yellow-400">★ {film.rating}/10</p>
+                  <span className="text-yellow-400">★ {film.rating}/10</span>
                 )}
-                <p className="text-xs text-gray-500">
+                <span className="text-xs">
                   Added {format(new Date(film.addedDate), 'MMM d, yyyy')}
-                </p>
+                </span>
               </div>
             </div>
           </motion.div>
