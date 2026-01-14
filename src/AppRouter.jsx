@@ -8,6 +8,7 @@ import Layout from './components/Layout';
 import SignIn from './pages/SignIn';
 import CalendarPage from './pages/CalendarPage';
 import WatchLaterPage from './pages/WatchLaterPage';
+import AllMoviesPage from './pages/AllMoviesPage';
 import StatisticsPage from './pages/StatisticsPage';
 import LoadingSpinner from './components/LoadingSpinner';
 
@@ -213,6 +214,16 @@ function App() {
                   onAddToWatchLater={handleAddToWatchLater}
                   onDeleteFromWatchLater={handleDeleteFromWatchLater}
                   onMoveToWatched={handleMoveToWatched}
+                />
+              } 
+            />
+            <Route 
+              path="/all-movies" 
+              element={
+                <AllMoviesPage 
+                  watchedFilms={watchedFilms}
+                  onEditFilm={handleUpdateFilm}
+                  onDeleteFilm={handleDeleteFilm}
                 />
               } 
             />

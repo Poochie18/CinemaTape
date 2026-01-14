@@ -1,0 +1,105 @@
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Film, Edit2, Trash2 } from 'lucide-react';
+import { format } from 'date-fns';
+import StarRating from './StarRating';
+import ConfirmModal from './ConfirmModal';
+
+export default function AllMovies({ films, onEditFilm, onDeleteFilm }) {
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
+
+  return (
+    <>
+      <div className="space-y-4">
+        {films.map((film, index) => (
+          <motion.div
+            key={film.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.03 }}
+            className="glass rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300"
+          >
+            <div className="p-4 sm:p-6 relative">
+              {/* Action buttons - top right */}
+              <div className="absolute top-4 right-4 flex gap-2 z-10">
+                <button
+                  onClick={() => onEditFilm(film)}
+                  className="p-2 rounded-lg glass-hover transition-all"
+                  title="Edit"
+                >
+                  <Edit2 className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setDeleteConfirm(film)}
+                  className="p-2 rounded-lg glass-hover text-red-400 hover:text-red-300 transition-all"
+                  title="Delete"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Content with Poster */}
+              <div className="flex gap-4">
+                {/* Poster */}
+                <div className="flex-shrink-0">
+                  {film.poster ? (
+                    <img
+                      src={film.poster}
+                      alt={film.title}
+                      className="w-20 h-30 sm:w-24 sm:h-36 object-cover rounded-lg"
+                    />
+                  ) : (
+                    <div className="w-20 h-30 sm:w-24 sm:h-36 bg-gray-800/50 rounded-lg flex items-center justify-center">
+                      <Film className="w-8 h-8 text-gray-600" />
+                    </div>
+                  )}
+                </div>
+
+                {/* Info */}
+                <div className="flex-1 space-y-2 pr-20 min-w-0">
+                  <div>
+                    <h4 className="text-lg sm:text-xl font-bold mb-1 break-words">{film.title}</h4>
+                    <div className="flex items-center gap-3 text-sm text-gray-400 flex-wrap">
+                      {film.year && <span>{film.year}</span>}
+                      <span>•</span>
+                      <span>{format(new Date(film.watchDate), 'MMM d, yyyy')}</span>
+                    </div>
+                  </div>
+
+                  {/* Rating */}
+                  {film.rating > 0 && (
+                    <div className="flex items-center gap-3">
+                      <StarRating rating={film.rating} readonly size="sm" />
+                      <span className="text-yellow-400 font-bold text-sm sm:text-base">{film.rating}/10</span>
+                    </div>
+                  )}
+
+                  {/* Note */}
+                  {film.note && (
+                    <div className="glass rounded-lg p-3">
+                      <p className="text-sm text-gray-300 whitespace-pre-wrap break-words line-clamp-2">{film.note}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={!!deleteConfirm}
+        onClose={() => setDeleteConfirm(null)}
+        onConfirm={() => {
+          onDeleteFilm(deleteConfirm.id);
+          setDeleteConfirm(null);
+        }}
+        title="Delete Movie"
+        message={`Are you sure you want to delete "${deleteConfirm?.title}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+      />
+    </>
+  );
+}

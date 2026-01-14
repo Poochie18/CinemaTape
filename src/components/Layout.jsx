@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { Film, Calendar as CalendarIcon, Clock, BarChart3, LogOut, User } from 'lucide-react';
+import { Film, Calendar as CalendarIcon, Clock, Film as FilmIcon, BarChart3, LogOut, User } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -35,6 +35,7 @@ export default function Layout() {
   const navItems = [
     { path: '/calendar', label: 'Calendar', icon: CalendarIcon },
     { path: '/watchlater', label: 'Later', icon: Clock },
+    { path: '/all-movies', label: 'All Movies', icon: FilmIcon },
     { path: '/statistics', label: 'Statistics', icon: BarChart3 },
   ];
 
