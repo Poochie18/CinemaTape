@@ -28,24 +28,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    env:
-      VITE_SUPABASE_URL: https://smnophnqtteafyhhbehc.supabase.co
-      VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtbm9waG5xdHRlYWZ5aGhiZWhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzNjIyNDgsImV4cCI6MjA4MzkzODI0OH0.uzT3eBPDsNg06SpneJupjkLE3aPBfkvHOLPVmPfacuk
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Build
-        run: npm run build
       
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -53,7 +38,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload docs folder (build output)
+          # Upload docs folder (pre-built)
           path: './docs'
       
       - name: Deploy to GitHub Pages
