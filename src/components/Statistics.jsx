@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import { format, startOfYear, endOfYear, eachMonthOfInterval, isSameMonth, startOfMonth, endOfMonth, differenceInDays, parseISO } from 'date-fns';
-import { Film, Star, TrendingUp, Award, ChevronLeft, ChevronRight, Flame } from 'lucide-react';
+import { format, startOfYear, endOfYear, eachMonthOfInterval, isSameMonth, startOfMonth, endOfMonth, differenceInDays, parseISO, eachDayOfInterval, getDay } from 'date-fns';
+import { Film, Star, TrendingUp, Award, ChevronLeft, ChevronRight, Flame, Calendar, Clock, TrendingDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Statistics({ films = [] }) {
@@ -87,6 +87,42 @@ export default function Statistics({ films = [] }) {
       };
     });
 
+    // Rating distribution
+    const ratingDistribution = Array.from({ length: 10 }, (_, i) => {
+      const rating = i + 1;
+      return {
+        rating,
+        count: watchedFilms.filter(f => f.rating === rating).length
+      };
+    }).reverse();
+
+    // Day of week stats
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const dayOfWeekStats = daysOfWeek.map((day, index) => ({
+      day,
+      count: watchedFilms.filter(f => getDay(new Date(f.watchDate)) === index).length
+    }));
+
+    // Recent years comparison
+    const yearlyComparison = availableYears.slice(0, 5).map(year => ({
+      year,
+      count: watchedFilms.filter(f => new Date(f.watchDate).getFullYear() === year).length,
+      avgRating: (() => {
+        const yearFilms = watchedFilms.filter(f => 
+          new Date(f.watchDate).getFullYear() === year && f.rating > 0
+        );
+        return yearFilms.length > 0 
+          ? (yearFilms.reduce((sum, f) => sum + f.rating, 0) / yearFilms.length).toFixed(1)
+          : 0;
+      })()
+    }));
+
+    // Worst rated
+    const worstRated = [...watchedFilms]
+      .filter((f) => f.rating > 0)
+      .sort((a, b) => a.rating - b.rating)
+      .slice(0, 5);
+
     return {
       total: watchedFilms.length,
       longestStreak: maxStreak,
@@ -94,10 +130,14 @@ export default function Statistics({ films = [] }) {
       avgRating,
       ratedCount,
       bestRated,
+      worstRated,
       mostActiveDay,
       monthlyStats,
+      ratingDistribution,
+      dayOfWeekStats,
+      yearlyComparison,
     };
-  }, [films, selectedYear]);
+  }, [films, selectedYear, availableYears]);
 
   if (!stats) {
     return (
@@ -295,6 +335,141 @@ export default function Statistics({ films = [] }) {
             <br />
             Watched {stats.mostActiveDay[1]} {stats.mostActiveDay[1] === 1 ? 'movie' : 'movies'}
           </p>
+        </motion.div>
+      )}
+
+      {/* Rating Distribution */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8 }}
+        className="glass rounded-xl p-6"
+      >
+        <h3 className="text-xl font-bold mb-4">Rating Distribution</h3>
+        <div className="space-y-2">
+          {stats.ratingDistribution.map((item, index) => {
+            const maxCount = Math.max(...stats.ratingDistribution.map(r => r.count), 1);
+            const percentage = (item.count / maxCount) * 100;
+            return (
+              <div key={item.rating} className="flex items-center gap-3">
+                <div className="flex items-center gap-1 w-12">
+                  <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                  <span className="text-sm font-medium">{item.rating}</span>
+                </div>
+                <div className="flex-1 h-6 bg-gray-800/30 rounded-lg overflow-hidden relative">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${percentage}%` }}
+                    transition={{ delay: 0.1 + index * 0.05, duration: 0.5 }}
+                    className="h-full bg-gradient-to-r from-yellow-600/80 to-yellow-500/80 flex items-center justify-end px-2"
+                  >
+                    {item.count > 0 && (
+                      <span className="text-xs font-semibold text-white">{item.count}</span>
+                    )}
+                  </motion.div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </motion.div>
+
+      {/* Day of Week Stats */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.9 }}
+        className="glass rounded-xl p-6"
+      >
+        <h3 className="text-xl font-bold mb-4">Favorite Viewing Days</h3>
+        <div className="grid grid-cols-7 gap-2">
+          {stats.dayOfWeekStats.map((item, index) => {
+            const maxCount = Math.max(...stats.dayOfWeekStats.map(d => d.count), 1);
+            const heightPercentage = (item.count / maxCount) * 100;
+            return (
+              <div key={item.day} className="flex flex-col items-center">
+                <motion.div
+                  initial={{ height: 0 }}
+                  animate={{ height: `${Math.max(heightPercentage, 10)}%` }}
+                  transition={{ delay: 0.1 + index * 0.1, duration: 0.5 }}
+                  className="w-full bg-gradient-to-t from-green-600/80 to-green-500/80 rounded-t-lg mb-2 flex items-start justify-center pt-2 min-h-[40px]"
+                  style={{ maxHeight: '120px' }}
+                >
+                  <span className="text-xs font-bold text-white">{item.count}</span>
+                </motion.div>
+                <span className="text-xs text-gray-400 font-medium">{item.day}</span>
+              </div>
+            );
+          })}
+        </div>
+      </motion.div>
+
+      {/* Yearly Comparison */}
+      {stats.yearlyComparison.length > 1 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.0 }}
+          className="glass rounded-xl p-6"
+        >
+          <h3 className="text-xl font-bold mb-4">Yearly Comparison</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+            {stats.yearlyComparison.map((item, index) => (
+              <motion.div
+                key={item.year}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.1 + index * 0.1 }}
+                className="glass-hover rounded-lg p-4 text-center"
+              >
+                <div className="text-sm text-gray-400 mb-2">{item.year}</div>
+                <div className="text-3xl font-bold mb-1">{item.count}</div>
+                <div className="text-xs text-gray-500">movies</div>
+                {item.avgRating > 0 && (
+                  <div className="mt-2 pt-2 border-t border-gray-700/50">
+                    <div className="flex items-center justify-center gap-1">
+                      <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                      <span className="text-sm font-medium text-yellow-400">{item.avgRating}</span>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* Worst Rated */}
+      {stats.worstRated.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1 }}
+          className="glass rounded-xl p-6"
+        >
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <TrendingDown className="w-6 h-6 text-red-400" />
+            Bottom 5 by Rating
+          </h3>
+          <div className="space-y-3">
+            {stats.worstRated.map((film, index) => (
+              <div key={film.id} className="glass-hover rounded-lg p-3 flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-red-600/20 border border-red-600/50 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">
+                  {index + 1}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-semibold text-sm truncate">{film.title}</h4>
+                  {film.year && (
+                    <p className="text-xs text-gray-500">{film.year}</p>
+                  )}
+                </div>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <Star className="w-4 h-4 text-red-400 fill-red-400" />
+                  <span className="font-bold text-red-400">{film.rating}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </motion.div>
       )}
     </div>
