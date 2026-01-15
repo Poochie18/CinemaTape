@@ -28,6 +28,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    env:
+      VITE_SUPABASE_URL: https://smnophnqtteafyhhbehc.supabase.co
+      VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNtbm9waG5xdHRlYWZ5aGhiZWhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzNjIyNDgsImV4cCI6MjA4MzkzODI0OH0.uzT3eBPDsNg06SpneJupjkLE3aPBfkvHOLPVmPfacuk
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,10 +45,6 @@ jobs:
         run: npm ci
       
       - name: Build
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-          VITE_TMDB_API_KEY: ${{ secrets.VITE_TMDB_API_KEY }}
         run: npm run build
       
       - name: Setup Pages
