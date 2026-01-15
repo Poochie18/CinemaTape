@@ -140,15 +140,17 @@ export default function AllMoviesPage({
       )}
 
       {/* Edit Modal */}
-      <AddMovieModal
-        isOpen={!!editingFilm}
-        onClose={() => setEditingFilm(null)}
-        onSave={async (filmData) => {
-          await onEditFilm(filmData);
-          setEditingFilm(null);
-        }}
-        editFilm={editingFilm}
-      />
+      {editingFilm && (
+        <AddMovieModal
+          isOpen={!!editingFilm}
+          onClose={() => setEditingFilm(null)}
+          onSave={async (filmData) => {
+            await onEditFilm(filmData);
+            setEditingFilm(null);
+          }}
+          editingFilm={editingFilm}
+        />
+      )}
     </div>
   );
 }

@@ -35,28 +35,28 @@ export default function Modal({ isOpen, onClose, children, title, size = 'md' })
           />
 
           {/* Modal */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className={`glass rounded-2xl ${sizeClasses[size]} w-full max-h-[90vh] flex flex-col relative`}
+              className={`glass rounded-2xl ${sizeClasses[size]} w-full max-h-[90vh] flex flex-col relative overflow-hidden`}
             >
               {/* Header */}
               {title && (
-                <div className="sticky top-0 glass border-b border-gray-700/50 px-6 py-4 flex items-center justify-between rounded-t-2xl z-10">
-                  <h2 className="text-2xl font-bold">{title}</h2>
+                <div className="sticky top-0 glass border-b border-gray-700/50 px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between rounded-t-2xl z-10">
+                  <h2 className="text-xl sm:text-2xl font-bold">{title}</h2>
                   <button
                     onClick={onClose}
-                    className="p-2 hover:bg-gray-700/50 rounded-lg transition-colors"
+                    className="p-2 hover:bg-gray-700/50 rounded-lg transition-colors flex-shrink-0"
                   >
-                    <X className="w-6 h-6" />
+                    <X className="w-5 h-5 sm:w-6 sm:h-6" />
                   </button>
                 </div>
               )}
 
               {/* Content */}
-              <div className="p-6 overflow-y-auto">
+              <div className="p-3 sm:p-6 overflow-y-auto">
                 {children}
               </div>
             </motion.div>
