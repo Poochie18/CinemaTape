@@ -68,7 +68,6 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter movie title..."
             className="input-field"
-            autoFocus
           />
         </div>
 
@@ -135,7 +134,7 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
         )}
 
         {/* Actions */}
-        <div className="flex flex-col sm:flex-row gap-3 justify-end">
+        <div className="flex flex-col-reverse sm:flex-row gap-3 justify-end">
           <button onClick={onClose} className="btn-secondary w-full sm:w-auto">
             Cancel
           </button>

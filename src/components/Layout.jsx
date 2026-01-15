@@ -46,10 +46,10 @@ export default function Layout() {
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             {/* Logo */}
-            <div className="flex items-center gap-3">
+            <NavLink to="/calendar" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
               <Film className="w-8 h-8 text-gray-400" />
               <h1 className="text-2xl font-bold">CinemaTape</h1>
-            </div>
+            </NavLink>
             
             {/* User Menu */}
             <div className="relative user-menu">
@@ -69,6 +69,10 @@ export default function Layout() {
                     exit={{ opacity: 0, y: -10 }}
                     className="absolute right-0 mt-2 w-48 bg-gray-900/95 backdrop-blur-xl rounded-lg shadow-xl border border-gray-700/50 overflow-hidden z-50"
                   >
+                    <div className="px-4 py-3 border-b border-gray-700/50">
+                      <p className="text-sm text-gray-400 mb-1">Signed in as</p>
+                      <p className="text-sm font-medium text-gray-200 truncate">{user?.user_metadata?.name || user?.email || 'User'}</p>
+                    </div>
                     <button
                       onClick={() => {
                         setShowDropdown(false);

@@ -63,7 +63,7 @@ export default function WatchLaterPage({
             {watchLaterFilms.length} {watchLaterFilms.length === 1 ? 'film' : 'films'} in queue
           </p>
         </div>
-        <div className="flex items-center gap-3 w-full sm:w-auto">
+        <div className="flex items-center justify-between gap-3 w-full sm:w-auto">
           <button
             onClick={() => setSortAscending(!sortAscending)}
             className="px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 bg-blue-600/30 border border-blue-600/50 text-blue-400 hover:bg-blue-600/40"
