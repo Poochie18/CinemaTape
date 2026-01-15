@@ -287,54 +287,66 @@ export default function Statistics({ films = [] }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.5 }}
           className="glass rounded-xl p-6"
         >
-          <h3 className="text-xl font-bold mb-4">Top 5 by Rating</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <TrendingUp className="w-6 h-6 text-green-400" />
+            Top 5 by Rating
+          </h3>
+          <div className="space-y-3">
             {stats.bestRated.map((film, index) => (
-              <div key={film.id} className="relative group">
-                <div className="aspect-[2/3] rounded-lg overflow-hidden glass-hover">
-                  {film.poster ? (
-                    <img src={film.poster} alt={film.title} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gray-800">
-                      <span className="text-xs text-center px-2">{film.title}</span>
-                    </div>
-                  )}
-                  {/* Rating badge */}
-                  <div className="absolute top-2 right-2 bg-yellow-500 text-black font-bold text-sm px-2 py-1 rounded-lg">
-                    {film.rating}
-                  </div>
-                  {/* Rank badge */}
-                  <div className="absolute top-2 left-2 bg-gray-700 text-white font-bold text-sm w-8 h-8 rounded-full flex items-center justify-center">
-                    {index + 1}
-                  </div>
+              <div key={film.id} className="glass-hover rounded-lg p-3 flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-green-600/20 border border-green-600/50 flex items-center justify-center text-green-400 font-bold text-sm flex-shrink-0">
+                  {index + 1}
                 </div>
-                <h4 className="text-sm font-semibold mt-2 line-clamp-2">{film.title}</h4>
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-semibold text-sm truncate">{film.title}</h4>
+                  {film.year && (
+                    <p className="text-xs text-gray-500">{film.year}</p>
+                  )}
+                </div>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <Star className="w-4 h-4 text-green-400 fill-green-400" />
+                  <span className="font-bold text-green-400">{film.rating}</span>
+                </div>
               </div>
             ))}
           </div>
         </motion.div>
       )}
 
-      {/* Most Active Day */}
-      {stats.mostActiveDay && (
+      {/* Worst Rated */}
+      {stats.worstRated.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="glass rounded-xl p-6 text-center"
+          transition={{ delay: 0.6 }}
+          className="glass rounded-xl p-6"
         >
-          <Award className="w-12 h-12 mx-auto mb-3 text-yellow-400" />
-          <h3 className="text-xl font-bold mb-2">Most Active Day</h3>
-          <p className="text-gray-400">
-            <span className="text-2xl font-bold text-gray-300">
-              {format(new Date(stats.mostActiveDay[0]), 'd MMMM yyyy')}
-            </span>
-            <br />
-            Watched {stats.mostActiveDay[1]} {stats.mostActiveDay[1] === 1 ? 'movie' : 'movies'}
-          </p>
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <TrendingDown className="w-6 h-6 text-red-400" />
+            Bottom 5 by Rating
+          </h3>
+          <div className="space-y-3">
+            {stats.worstRated.map((film, index) => (
+              <div key={film.id} className="glass-hover rounded-lg p-3 flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-red-600/20 border border-red-600/50 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">
+                  {index + 1}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-semibold text-sm truncate">{film.title}</h4>
+                  {film.year && (
+                    <p className="text-xs text-gray-500">{film.year}</p>
+                  )}
+                </div>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <Star className="w-4 h-4 text-red-400 fill-red-400" />
+                  <span className="font-bold text-red-400">{film.rating}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </motion.div>
       )}
 
@@ -342,7 +354,7 @@ export default function Statistics({ films = [] }) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
+        transition={{ delay: 0.7 }}
         className="glass rounded-xl p-6"
       >
         <h3 className="text-xl font-bold mb-4">Rating Distribution</h3>
@@ -378,7 +390,7 @@ export default function Statistics({ films = [] }) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9 }}
+        transition={{ delay: 0.8 }}
         className="glass rounded-xl p-6"
       >
         <h3 className="text-xl font-bold mb-4">Favorite Viewing Days</h3>
@@ -403,6 +415,26 @@ export default function Statistics({ films = [] }) {
           })}
         </div>
       </motion.div>
+
+      {/* Most Active Day */}
+      {stats.mostActiveDay && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9 }}
+          className="glass rounded-xl p-6 text-center"
+        >
+          <Award className="w-12 h-12 mx-auto mb-3 text-yellow-400" />
+          <h3 className="text-xl font-bold mb-2">Most Active Day</h3>
+          <p className="text-gray-400">
+            <span className="text-2xl font-bold text-gray-300">
+              {format(new Date(stats.mostActiveDay[0]), 'd MMMM yyyy')}
+            </span>
+            <br />
+            Watched {stats.mostActiveDay[1]} {stats.mostActiveDay[1] === 1 ? 'movie' : 'movies'}
+          </p>
+        </motion.div>
+      )}
 
       {/* Yearly Comparison */}
       {stats.yearlyComparison.length > 1 && (
@@ -434,40 +466,6 @@ export default function Statistics({ films = [] }) {
                   </div>
                 )}
               </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      )}
-
-      {/* Worst Rated */}
-      {stats.worstRated.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1 }}
-          className="glass rounded-xl p-6"
-        >
-          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-            <TrendingDown className="w-6 h-6 text-red-400" />
-            Bottom 5 by Rating
-          </h3>
-          <div className="space-y-3">
-            {stats.worstRated.map((film, index) => (
-              <div key={film.id} className="glass-hover rounded-lg p-3 flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-red-600/20 border border-red-600/50 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">
-                  {index + 1}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-sm truncate">{film.title}</h4>
-                  {film.year && (
-                    <p className="text-xs text-gray-500">{film.year}</p>
-                  )}
-                </div>
-                <div className="flex items-center gap-1 flex-shrink-0">
-                  <Star className="w-4 h-4 text-red-400 fill-red-400" />
-                  <span className="font-bold text-red-400">{film.rating}</span>
-                </div>
-              </div>
             ))}
           </div>
         </motion.div>
