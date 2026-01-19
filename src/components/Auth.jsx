@@ -1,17 +1,24 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { LogIn, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { LogIn, Mail, Lock, Eye, EyeOff, Languages } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
 export default function Auth() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showLangDropdown, setShowLangDropdown] = useState(false);
+
+  const changeLanguage = async (lang) => {
+    await i18n.changeLanguage(lang);
+    setShowLangDropdown(false);
+    toast.success(lang === 'en' ? 'Language changed to English' : 'Мову змінено на українську');
+  };
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -57,6 +64,42 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gray-900">
+      {/* Language Selector - Top Right */}
+      <div className="absolute top-4 right-4 z-50">
+        <div className="relative">
+          <button
+            onClick={() => setShowLangDropdown(!showLangDropdown)}
+            className="flex items-center gap-2 px-3 py-2 glass rounded-lg hover:bg-gray-800/50 transition-colors text-sm"
+          >
+            <Languages className="w-5 h-5" />
+            <span className="uppercase">{i18n.language}</span>
+          </button>
+
+          {showLangDropdown && (
+            <div className="absolute right-0 mt-2 w-40 glass rounded-lg shadow-xl border border-gray-700/50 overflow-hidden">
+              <button
+                onClick={() => changeLanguage('en')}
+                className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+                  i18n.language === 'en' ? 'bg-gray-800/50 text-white' : 'text-gray-300 hover:bg-gray-800/50'
+                }`}
+              >
+                <span className="text-xl">🇬🇧</span>
+                <span>English</span>
+              </button>
+              <button
+                onClick={() => changeLanguage('uk')}
+                className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+                  i18n.language === 'uk' ? 'bg-gray-800/50 text-white' : 'text-gray-300 hover:bg-gray-800/50'
+                }`}
+              >
+                <span className="text-xl">🇺🇦</span>
+                <span>Українська</span>
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="glass rounded-2xl p-8 w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
