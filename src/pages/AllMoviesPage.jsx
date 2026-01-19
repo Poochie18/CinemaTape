@@ -3,12 +3,14 @@ import { Search, SortAsc, Film as FilmIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import AllMovies from '../components/AllMovies';
 import AddMovieModal from '../components/AddMovieModal';
+import { useTranslation } from 'react-i18next';
 
 export default function AllMoviesPage({ 
   watchedFilms,
   onEditFilm,
   onDeleteFilm
 }) {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('rating'); // rating, title, year
   const [sortDirection, setSortDirection] = useState('desc'); // asc, desc
@@ -63,9 +65,9 @@ export default function AllMoviesPage({
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold">All Movies</h2>
+        <h2 className="text-2xl font-bold">{t('allMovies.title')}</h2>
         <p className="text-gray-400 text-sm mt-1">
-          {watchedFilms.length} {watchedFilms.length === 1 ? 'movie' : 'movies'} watched
+          {watchedFilms.length} {watchedFilms.length === 1 ? t('watchLater.film') : t('watchLater.films')} {t('calendar.filmsWatched')}
         </p>
       </div>
 
@@ -78,7 +80,7 @@ export default function AllMoviesPage({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by title or year..."
+            placeholder={t('allMovies.search')}
             className="w-full pl-10 pr-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg focus:outline-none focus:border-gray-600 transition-colors"
           />
         </div>
@@ -86,7 +88,7 @@ export default function AllMoviesPage({
         {/* Sort Buttons */}
         <div className="flex items-center gap-2 flex-wrap">
           <SortAsc className="w-5 h-5 text-gray-400" />
-          <span className="text-sm text-gray-400">Sort by:</span>
+          <span className="text-sm text-gray-400">{t('allMovies.sortBy')}:</span>
           <button
             onClick={() => handleSortClick('rating')}
             className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
@@ -95,7 +97,7 @@ export default function AllMoviesPage({
                 : 'bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-700/50'
             }`}
           >
-            Rating {sortBy === 'rating' && (sortDirection === 'asc' ? '↑' : '↓')}
+            {t('allMovies.rating')} {sortBy === 'rating' && (sortDirection === 'asc' ? '↑' : '↓')}
           </button>
           <button
             onClick={() => handleSortClick('title')}
@@ -105,7 +107,7 @@ export default function AllMoviesPage({
                 : 'bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-700/50'
             }`}
           >
-            Title {sortBy === 'title' && (sortDirection === 'asc' ? '↑' : '↓')}
+            {t('allMovies.movieTitle')} {sortBy === 'title' && (sortDirection === 'asc' ? '↑' : '↓')}
           </button>
           <button
             onClick={() => handleSortClick('year')}
@@ -115,7 +117,7 @@ export default function AllMoviesPage({
                 : 'bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-700/50'
             }`}
           >
-            Year {sortBy === 'year' && (sortDirection === 'asc' ? '↑' : '↓')}
+            {t('addMovie.year')} {sortBy === 'year' && (sortDirection === 'asc' ? '↑' : '↓')}
           </button>
         </div>
       </div>
@@ -125,10 +127,10 @@ export default function AllMoviesPage({
         <div className="glass rounded-xl p-12 text-center">
           <FilmIcon className="w-16 h-16 mx-auto text-gray-600 mb-4" />
           <h3 className="text-xl font-semibold mb-2">
-            {searchQuery ? 'No movies found' : 'No movies watched yet'}
+            {searchQuery ? t('allMovies.noMoviesFound') : t('statistics.noMoviesYet')}
           </h3>
           <p className="text-gray-400">
-            {searchQuery ? 'Try a different search term' : 'Start adding movies to see them here'}
+            {searchQuery ? t('allMovies.tryDifferentSearch') : t('watchLater.emptyStateDesc')}
           </p>
         </div>
       ) : (

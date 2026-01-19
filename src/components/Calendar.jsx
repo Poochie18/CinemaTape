@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, isToday } from 'date-fns';
+import { enUS, uk } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 export default function Calendar({ selectedDate, onSelectDate, watchedFilms }) {
+  const { i18n } = useTranslation();
+  const dateLocale = i18n.language === 'uk' ? uk : enUS;
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const monthStart = startOfMonth(currentMonth);
@@ -31,7 +35,9 @@ export default function Calendar({ selectedDate, onSelectDate, watchedFilms }) {
     );
   };
 
-  const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const weekDays = i18n.language === 'uk' 
+    ? ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд']
+    : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
   return (
     <div className="w-full">
@@ -45,7 +51,7 @@ export default function Calendar({ selectedDate, onSelectDate, watchedFilms }) {
         </button>
         
         <h2 className="text-xl sm:text-2xl font-bold capitalize">
-          {format(currentMonth, 'LLLL yyyy')}
+          {format(currentMonth, 'LLLL yyyy', { locale: dateLocale })}
         </h2>
         
         <button

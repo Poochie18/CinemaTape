@@ -2,10 +2,14 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Film, Edit2, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
+import { enUS, uk } from 'date-fns/locale';
 import StarRating from './StarRating';
 import ConfirmModal from './ConfirmModal';
+import { useTranslation } from 'react-i18next';
 
 export default function AllMovies({ films, onEditFilm, onDeleteFilm }) {
+  const { t, i18n } = useTranslation();
+  const dateLocale = i18n.language === 'uk' ? uk : enUS;
   const [deleteConfirm, setDeleteConfirm] = useState(null);
 
   return (
@@ -25,14 +29,14 @@ export default function AllMovies({ films, onEditFilm, onDeleteFilm }) {
                 <button
                   onClick={() => onEditFilm(film)}
                   className="p-2 sm:p-3 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 border border-blue-600/50 transition-all"
-                  title="Edit"
+                  title={t('common.edit')}
                 >
                   <Edit2 className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
                 </button>
                 <button
                   onClick={() => setDeleteConfirm(film)}
                   className="p-2 sm:p-3 rounded-lg glass-hover text-red-400 hover:text-red-300 transition-all"
-                  title="Delete"
+                  title={t('common.delete')}
                 >
                   <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
@@ -46,7 +50,7 @@ export default function AllMovies({ films, onEditFilm, onDeleteFilm }) {
                       <div className="flex items-center gap-3 text-sm text-gray-400 flex-wrap">
                         {film.year && <span>{film.year}</span>}
                         <span>•</span>
-                        <span>{format(new Date(film.watchDate), 'MMM d, yyyy')}</span>
+                        <span>{format(new Date(film.watchDate), 'MMM d, yyyy', { locale: dateLocale })}</span>
                       </div>
                     </div>
 
@@ -79,10 +83,8 @@ export default function AllMovies({ films, onEditFilm, onDeleteFilm }) {
           onDeleteFilm(deleteConfirm.id);
           setDeleteConfirm(null);
         }}
-        title="Delete Movie"
-        message={`Are you sure you want to delete "${deleteConfirm?.title}"? This action cannot be undone.`}
-        confirmText="Delete"
-        cancelText="Cancel"
+        title={t('confirmModal.deleteMovie')}
+        message={`${t('confirmModal.confirmDelete')} "${deleteConfirm?.title}"? ${t('confirmModal.cannotBeUndone')}`}
       />
     </>
   );
