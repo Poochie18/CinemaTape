@@ -3,8 +3,10 @@ import { Film, Check, Trash2, Pencil } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 import ConfirmModal from './ConfirmModal';
+import { useTranslation } from 'react-i18next';
 
 export default function WatchLater({ films, onMarkAsWatched, onDelete, onEdit }) {
+  const { t } = useTranslation();
   const [deleteConfirm, setDeleteConfirm] = useState(null);
 
   if (films.length === 0) {
@@ -12,9 +14,9 @@ export default function WatchLater({ films, onMarkAsWatched, onDelete, onEdit })
       <div className="w-full">
         <div className="glass rounded-xl p-12 text-center">
           <Film className="w-16 h-16 mx-auto text-gray-600 mb-4" />
-          <h3 className="text-xl font-semibold mb-2">No movies in later</h3>
+          <h3 className="text-xl font-semibold mb-2">{t('watchLater.emptyState')}</h3>
           <p className="text-gray-400">
-            Add movies you plan to watch using the button above
+            {t('watchLater.emptyStateDesc')}
           </p>
         </div>
       </div>
@@ -42,21 +44,21 @@ export default function WatchLater({ films, onMarkAsWatched, onDelete, onEdit })
                   <button
                     onClick={() => onEdit(film)}
                     className="p-2 sm:p-3 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 border border-blue-600/50 transition-all"
-                    title="Edit"
+                    title={t('common.edit')}
                   >
                     <Pencil className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
                   </button>
                   <button
                     onClick={() => onMarkAsWatched(film)}
                     className="p-2 sm:p-3 rounded-lg bg-green-600/20 hover:bg-green-600/30 border border-green-600/50 transition-all"
-                    title="Mark as Watched"
+                    title={t('watchLater.markAsWatched')}
                   >
                     <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
                   </button>
                   <button
                     onClick={() => setDeleteConfirm(film)}
                     className="p-2 sm:p-3 rounded-lg glass-hover text-red-400 hover:text-red-300 transition-all"
-                    title="Delete"
+                    title={t('common.delete')}
                   >
                     <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
@@ -88,10 +90,8 @@ export default function WatchLater({ films, onMarkAsWatched, onDelete, onEdit })
           onDelete(deleteConfirm.id);
           setDeleteConfirm(null);
         }}
-        title="Remove from Later"
-        message={`Are you sure you want to remove "${deleteConfirm?.title}" from your later list?`}
-        confirmText="Remove"
-        cancelText="Cancel"
+        title={t('confirmModal.deleteMovie')}
+        message={`${t('confirmModal.confirmDelete')} "${deleteConfirm?.title}"?`}
       />
     </div>
   );

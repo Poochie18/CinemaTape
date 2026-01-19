@@ -4,8 +4,10 @@ import { motion } from 'framer-motion';
 import { Calendar, Trash2, Edit2, Plus } from 'lucide-react';
 import StarRating from './StarRating';
 import ConfirmModal from './ConfirmModal';
+import { useTranslation } from 'react-i18next';
 
 export default function DayFilms({ selectedDate, films, onAddClick, onDeleteFilm, onEditFilm }) {
+  const { t } = useTranslation();
   const [deleteConfirm, setDeleteConfirm] = useState(null);
 
   if (!selectedDate) {
@@ -29,7 +31,7 @@ export default function DayFilms({ selectedDate, films, onAddClick, onDeleteFilm
         </h3>
         <button onClick={onAddClick} className="btn-primary flex items-center gap-2 w-full sm:w-auto justify-center">
           <Plus className="w-5 h-5" />
-          <span>Add Movie</span>
+          <span>{t('addMovie.addMovie')}</span>
         </button>
       </div>
 
@@ -59,35 +61,37 @@ export default function DayFilms({ selectedDate, films, onAddClick, onDeleteFilm
                   <button
                     onClick={() => onEditFilm(film)}
                     className="p-2 sm:p-3 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 border border-blue-600/50 transition-all"
-                    title="Edit"
+                    title={t('common.edit')}
                   >
                     <Edit2 className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
                   </button>
                   <button
                     onClick={() => setDeleteConfirm(film)}
                     className="p-2 sm:p-3 rounded-lg glass-hover text-red-400 hover:text-red-300 transition-all"
-                    title="Delete"
+                    title={t('common.delete')}
                   >
                     <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                 </div>
 
                 {/* Content */}
-                <div className="space-y-3 pr-20">
-                  <div>
-                    <h4 className="text-lg sm:text-xl font-bold mb-1">{film.title}</h4>
-                    {film.year && (
-                      <p className="text-gray-500 text-sm">{film.year}</p>
+                <div className="space-y-3">
+                  <div className="pr-20">
+                    <div>
+                      <h4 className="text-lg sm:text-xl font-bold mb-1">{film.title}</h4>
+                      {film.year && (
+                        <p className="text-gray-500 text-sm">{film.year}</p>
+                      )}
+                    </div>
+
+                    {/* Rating */}
+                    {film.rating > 0 && (
+                      <div className="flex items-center gap-3">
+                        <StarRating rating={film.rating} readonly size="sm" />
+                        <span className="text-yellow-400 font-bold text-sm sm:text-base">{film.rating}/10</span>
+                      </div>
                     )}
                   </div>
-
-                  {/* Rating */}
-                  {film.rating > 0 && (
-                    <div className="flex items-center gap-3">
-                      <StarRating rating={film.rating} readonly size="sm" />
-                      <span className="text-yellow-400 font-bold text-sm sm:text-base">{film.rating}/10</span>
-                    </div>
-                  )}
 
                   {/* Note */}
                   {film.note && (
@@ -110,10 +114,8 @@ export default function DayFilms({ selectedDate, films, onAddClick, onDeleteFilm
           onDeleteFilm(deleteConfirm.id);
           setDeleteConfirm(null);
         }}
-        title="Delete Movie"
-        message={`Are you sure you want to delete "${deleteConfirm?.title}"? This action cannot be undone.`}
-        confirmText="Delete"
-        cancelText="Cancel"
+        title={t('confirmModal.deleteMovie')}
+        message={`${t('confirmModal.confirmDelete')} "${deleteConfirm?.title}"? ${t('confirmModal.cannotBeUndone')}`}
       />
     </div>
   );

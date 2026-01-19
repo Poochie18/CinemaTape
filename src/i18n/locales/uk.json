@@ -1,0 +1,152 @@
+{
+  "app": {
+    "name": "CinemaTape",
+    "tagline": "Ваш особистий кінощоденник"
+  },
+  "nav": {
+    "calendar": "Календар",
+    "later": "Пізніше",
+    "allMovies": "Всі Фільми",
+    "statistics": "Статистика"
+  },
+  "auth": {
+    "signIn": "Увійти",
+    "signUp": "Зареєструватися",
+    "signOut": "Вийти",
+    "email": "Електронна пошта",
+    "password": "Пароль",
+    "name": "Ім'я",
+    "yourName": "Ваше ім'я",
+    "yourEmail": "ваша@пошта.com",
+    "signedInAs": "Увійшли як",
+    "alreadyHaveAccount": "Вже є акаунт?",
+    "dontHaveAccount": "Немає акаунту?",
+    "signInSuccess": "Успішний вхід!",
+    "signOutSuccess": "Успішний вихід",
+    "signUpSuccess": "Акаунт створено! Ви увійшли в систему.",
+    "confirmEmail": "Перевірте електронну пошту для підтвердження реєстрації!",
+    "emailAlreadyRegistered": "Ця електронна пошта вже зареєстрована. Будь ласка, увійдіть.",
+    "authFailed": "Помилка аутентифікації",
+    "showPassword": "Показати пароль",
+    "hidePassword": "Приховати пароль"
+  },
+  "calendar": {
+    "title": "Календар",
+    "noFilmsThisDay": "Жодного фільму не переглянуто цього дня",
+    "addFirstFilm": "Додати Перший Фільм",
+    "filmsWatched": "фільмів переглянуто"
+  },
+  "watchLater": {
+    "title": "Пізніше",
+    "filmsInQueue": "фільмів у черзі",
+    "film": "фільм",
+    "films": "фільмів",
+    "addFilm": "Додати Фільм",
+    "markAsWatched": "Відмітити як Переглянутий",
+    "sortHighToLow": "Високий → Низький",
+    "sortLowToHigh": "Низький → Високий",
+    "emptyState": "Ваш список для перегляду порожній",
+    "emptyStateDesc": "Додайте фільми, які хочете переглянути пізніше"
+  },
+  "allMovies": {
+    "title": "Всі Фільми",
+    "totalFilms": "Всього фільмів",
+    "search": "Пошук фільмів...",
+    "sortByDate": "Сортувати за Датою",
+    "sortByRating": "Сортувати за Рейтингом",
+    "sortByTitle": "Сортувати за Назвою",
+    "newest": "Новіші",
+    "oldest": "Старіші",
+    "highest": "Найвищий",
+    "lowest": "Найнижчий",
+    "aToZ": "А → Я",
+    "zToA": "Я → А",
+    "noMoviesFound": "Фільмів не знайдено",
+    "tryDifferentSearch": "Спробуйте інший пошук або додайте свій перший фільм"
+  },
+  "statistics": {
+    "title": "Статистика",
+    "subtitle": "Ваша статистика перегляду",
+    "noMoviesYet": "Ще не переглянуто жодного фільму. Почніть додавати фільми, щоб побачити статистику!",
+    "totalWatched": "Всього Переглянуто",
+    "thisYear": "Цього Року",
+    "averageRating": "Середній Рейтинг",
+    "longestStreak": "Найдовша Серія",
+    "days": "днів",
+    "bestRated": "Найкращі за Рейтингом",
+    "monthlyActivity": "Щомісячна Активність",
+    "previousYear": "Попередній Рік",
+    "nextYear": "Наступний Рік",
+    "ratingDistribution": "Розподіл Рейтингу",
+    "dayOfWeek": "День Тижня",
+    "mostActiveDay": "Найактивніший День",
+    "moviesWatched": "фільмів переглянуто",
+    "githubStyle": "Стиль GitHub",
+    "viewDetails": "Переглянути Деталі"
+  },
+  "addMovie": {
+    "addMovie": "Додати Фільм",
+    "editMovie": "Редагувати Фільм",
+    "addToLater": "Додати на Пізніше",
+    "movieTitle": "Назва Фільму",
+    "movieTitlePlaceholder": "Введіть назву фільму...",
+    "year": "Рік",
+    "rating": "Рейтинг (0-10)",
+    "priority": "Пріоритет (0-10)",
+    "watchDate": "Дата Перегляду",
+    "notes": "Нотатки та Думки",
+    "notesPlaceholder": "Ваші думки про фільм...",
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "required": "*"
+  },
+  "moveToWatched": {
+    "title": "Перемістити у Переглянуті",
+    "selectDate": "Виберіть дату, коли ви переглянули цей фільм",
+    "addNotes": "Додайте свій рейтинг та нотатки",
+    "move": "Перемістити у Переглянуті"
+  },
+  "confirmModal": {
+    "deleteMovie": "Видалити Фільм",
+    "confirmDelete": "Ви впевнені, що хочете видалити",
+    "cannotBeUndone": "Цю дію неможливо скасувати.",
+    "delete": "Видалити",
+    "cancel": "Скасувати"
+  },
+  "common": {
+    "edit": "Редагувати",
+    "delete": "Видалити",
+    "close": "Закрити",
+    "loading": "Завантаження...",
+    "error": "Помилка",
+    "success": "Успіх",
+    "noData": "Немає даних",
+    "addedSuccessfully": "Успішно додано",
+    "updatedSuccessfully": "Успішно оновлено",
+    "deletedSuccessfully": "Успішно видалено",
+    "movedSuccessfully": "Успішно переміщено у переглянуті"
+  },
+  "months": {
+    "jan": "Січ",
+    "feb": "Лют",
+    "mar": "Бер",
+    "apr": "Кві",
+    "may": "Тра",
+    "jun": "Чер",
+    "jul": "Лип",
+    "aug": "Сер",
+    "sep": "Вер",
+    "oct": "Жов",
+    "nov": "Лис",
+    "dec": "Гру"
+  },
+  "days": {
+    "sun": "Нд",
+    "mon": "Пн",
+    "tue": "Вт",
+    "wed": "Ср",
+    "thu": "Чт",
+    "fri": "Пт",
+    "sat": "Сб"
+  }
+}

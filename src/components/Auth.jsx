@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { LogIn, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 export default function Auth() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -31,11 +33,11 @@ export default function Auth() {
         
         // Check if email confirmation is required
         if (data?.user?.identities?.length === 0) {
-          toast.error('This email is already registered. Please sign in instead.');
+          toast.error(t('auth.emailAlreadyRegistered'));
         } else if (data?.user && !data?.session) {
-          toast.success('Check your email to confirm registration!');
+          toast.success(t('auth.confirmEmail'));
         } else {
-          toast.success('Account created! You are now signed in.');
+          toast.success(t('auth.signUpSuccess'));
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -43,11 +45,11 @@ export default function Auth() {
           password,
         });
         if (error) throw error;
-        toast.success('Signed in successfully!');
+        toast.success(t('auth.signInSuccess'));
       }
     } catch (error) {
       console.error('Auth error:', error);
-      toast.error(error.message || 'Authentication failed');
+      toast.error(error.message || t('auth.authFailed'));
     } finally {
       setLoading(false);
     }
@@ -61,8 +63,8 @@ export default function Auth() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-700/50 mb-4">
             <LogIn className="w-8 h-8 text-gray-400" />
           </div>
-          <h1 className="text-3xl font-bold mb-2">CinemaTape</h1>
-          <p className="text-gray-400 text-sm">Your personal cinema diary</p>
+          <h1 className="text-3xl font-bold mb-2">{t('app.name')}</h1>
+          <p className="text-gray-400 text-sm">{t('app.tagline')}</p>
         </div>
 
         {/* Form */}
@@ -70,12 +72,12 @@ export default function Auth() {
           {/* Name (only for sign up) */}
           {isSignUp && (
             <div>
-              <label className="block text-sm font-medium mb-2">Name</label>
+              <label className="block text-sm font-medium mb-2">{t('auth.name')}</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Your name"
+                placeholder={t('auth.yourName')}
                 className="input-field"
                 required
                 disabled={loading}
@@ -85,14 +87,14 @@ export default function Auth() {
 
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium mb-2">Email</label>
+            <label className="block text-sm font-medium mb-2">{t('auth.email')}</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
+                placeholder={t('auth.yourEmail')}
                 className="input-field pl-11"
                 required
                 disabled={loading}
@@ -102,7 +104,7 @@ export default function Auth() {
 
           {/* Password */}
           <div>
-            <label className="block text-sm font-medium mb-2">Password</label>
+            <label className="block text-sm font-medium mb-2">{t('auth.password')}</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
               <input
@@ -119,6 +121,7 @@ export default function Auth() {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-400"
+                title={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
               >
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
@@ -139,7 +142,7 @@ export default function Auth() {
             ) : (
               <>
                 <LogIn className="w-5 h-5" />
-                {isSignUp ? 'Sign Up' : 'Sign In'}
+                {isSignUp ? t('auth.signUp') : t('auth.signIn')}
               </>
             )}
           </button>
@@ -152,7 +155,7 @@ export default function Auth() {
             className="text-sm text-gray-400 hover:text-gray-300"
             disabled={loading}
           >
-            {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+            {isSignUp ? t('auth.alreadyHaveAccount') : t('auth.dontHaveAccount')}
           </button>
         </div>
       </div>

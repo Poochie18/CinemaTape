@@ -1,7 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
-export default function ConfirmModal({ isOpen, onClose, onConfirm, title, message, confirmText = 'Delete', cancelText = 'Cancel' }) {
+export default function ConfirmModal({ isOpen, onClose, onConfirm, title, message, confirmText, cancelText }) {
+  const { t } = useTranslation();
+  
   return (
     <AnimatePresence>
       {isOpen && (
@@ -48,7 +51,7 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, messag
                   onClick={onClose}
                   className="flex-1 px-4 py-3 glass-hover rounded-lg font-medium transition-all"
                 >
-                  {cancelText}
+                  {cancelText || t('confirmModal.cancel')}
                 </button>
                 <button
                   onClick={() => {
@@ -57,7 +60,7 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, messag
                   }}
                   className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-medium transition-all"
                 >
-                  {confirmText}
+                  {confirmText || t('confirmModal.delete')}
                 </button>
               </div>
             </motion.div>

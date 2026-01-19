@@ -3,8 +3,10 @@ import { format } from 'date-fns';
 import { Calendar as CalendarIcon, Save } from 'lucide-react';
 import Modal from './Modal';
 import StarRating from './StarRating';
+import { useTranslation } from 'react-i18next';
 
 export default function MoveToWatchedModal({ isOpen, onClose, onSave, movie }) {
+  const { t } = useTranslation();
   const [watchDate, setWatchDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [rating, setRating] = useState(0);
   const [note, setNote] = useState(movie?.note || '');
@@ -25,7 +27,7 @@ export default function MoveToWatchedModal({ isOpen, onClose, onSave, movie }) {
   if (!movie) return null;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Mark as Watched" size="md">
+    <Modal isOpen={isOpen} onClose={onClose} title={t('watchLater.markAsWatched')} size="md">
       <div className="space-y-6">
         {/* Movie Info */}
         <div className="glass rounded-lg p-4">
@@ -37,7 +39,7 @@ export default function MoveToWatchedModal({ isOpen, onClose, onSave, movie }) {
         <div>
           <label className="block text-sm font-medium mb-2">
             <CalendarIcon className="w-4 h-4 inline mr-2" />
-            Watch Date
+            {t('addMovie.watchDate')}
           </label>
           <input
             type="date"
@@ -51,7 +53,7 @@ export default function MoveToWatchedModal({ isOpen, onClose, onSave, movie }) {
         {/* Rating */}
         <div>
           <label className="block text-sm font-medium mb-2">
-            Rating (0-10)
+            {t('addMovie.rating')}
           </label>
           <div className="flex items-center gap-4">
             <StarRating rating={rating} onRatingChange={setRating} />
@@ -62,12 +64,12 @@ export default function MoveToWatchedModal({ isOpen, onClose, onSave, movie }) {
         {/* Note */}
         <div>
           <label className="block text-sm font-medium mb-2">
-            Notes & Thoughts
+            {t('addMovie.notes')}
           </label>
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            placeholder="Your thoughts about the movie..."
+            placeholder={t('addMovie.notesPlaceholder')}
             className="input-field min-h-32 resize-none"
             rows={4}
           />
@@ -76,14 +78,14 @@ export default function MoveToWatchedModal({ isOpen, onClose, onSave, movie }) {
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-3 justify-end">
           <button onClick={onClose} className="btn-secondary w-full sm:w-auto">
-            Cancel
+            {t('addMovie.cancel')}
           </button>
           <button 
             onClick={handleSave} 
             className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 w-full sm:w-auto"
           >
             <Save className="w-5 h-5" />
-            Save as Watched
+            {t('moveToWatched.move')}
           </button>
         </div>
       </div>

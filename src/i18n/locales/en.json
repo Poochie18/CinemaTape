@@ -1,0 +1,152 @@
+{
+  "app": {
+    "name": "CinemaTape",
+    "tagline": "Your personal cinema diary"
+  },
+  "nav": {
+    "calendar": "Calendar",
+    "later": "Later",
+    "allMovies": "All Movies",
+    "statistics": "Statistics"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "yourName": "Your name",
+    "yourEmail": "your@email.com",
+    "signedInAs": "Signed in as",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "signInSuccess": "Signed in successfully!",
+    "signOutSuccess": "Signed out successfully",
+    "signUpSuccess": "Account created! You are now signed in.",
+    "confirmEmail": "Check your email to confirm registration!",
+    "emailAlreadyRegistered": "This email is already registered. Please sign in instead.",
+    "authFailed": "Authentication failed",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
+  },
+  "calendar": {
+    "title": "Calendar",
+    "noFilmsThisDay": "No films watched this day",
+    "addFirstFilm": "Add First Film",
+    "filmsWatched": "films watched"
+  },
+  "watchLater": {
+    "title": "Later",
+    "filmsInQueue": "films in queue",
+    "film": "film",
+    "films": "films",
+    "addFilm": "Add Film",
+    "markAsWatched": "Mark as Watched",
+    "sortHighToLow": "High → Low",
+    "sortLowToHigh": "Low → High",
+    "emptyState": "Your watch later list is empty",
+    "emptyStateDesc": "Add movies you want to watch later"
+  },
+  "allMovies": {
+    "title": "All Movies",
+    "totalFilms": "Total films",
+    "search": "Search movies...",
+    "sortByDate": "Sort by Date",
+    "sortByRating": "Sort by Rating",
+    "sortByTitle": "Sort by Title",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "highest": "Highest",
+    "lowest": "Lowest",
+    "aToZ": "A → Z",
+    "zToA": "Z → A",
+    "noMoviesFound": "No movies found",
+    "tryDifferentSearch": "Try a different search or add your first movie"
+  },
+  "statistics": {
+    "title": "Statistics",
+    "subtitle": "Your viewing insights",
+    "noMoviesYet": "No movies watched yet. Start adding movies to see statistics!",
+    "totalWatched": "Total Watched",
+    "thisYear": "This Year",
+    "averageRating": "Average Rating",
+    "longestStreak": "Longest Streak",
+    "days": "days",
+    "bestRated": "Best Rated",
+    "monthlyActivity": "Monthly Activity",
+    "previousYear": "Previous Year",
+    "nextYear": "Next Year",
+    "ratingDistribution": "Rating Distribution",
+    "dayOfWeek": "Day of Week",
+    "mostActiveDay": "Most Active Day",
+    "moviesWatched": "movies watched",
+    "githubStyle": "GitHub Style",
+    "viewDetails": "View Details"
+  },
+  "addMovie": {
+    "addMovie": "Add Movie",
+    "editMovie": "Edit Movie",
+    "addToLater": "Add to Later",
+    "movieTitle": "Movie Title",
+    "movieTitlePlaceholder": "Enter movie title...",
+    "year": "Year",
+    "rating": "Rating (0-10)",
+    "priority": "Priority (0-10)",
+    "watchDate": "Watch Date",
+    "notes": "Notes & Thoughts",
+    "notesPlaceholder": "Your thoughts about the movie...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "required": "*"
+  },
+  "moveToWatched": {
+    "title": "Move to Watched",
+    "selectDate": "Select the date you watched this film",
+    "addNotes": "Add your rating and notes",
+    "move": "Move to Watched"
+  },
+  "confirmModal": {
+    "deleteMovie": "Delete Movie",
+    "confirmDelete": "Are you sure you want to delete",
+    "cannotBeUndone": "This action cannot be undone.",
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "common": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "noData": "No data available",
+    "addedSuccessfully": "Added successfully",
+    "updatedSuccessfully": "Updated successfully",
+    "deletedSuccessfully": "Deleted successfully",
+    "movedSuccessfully": "Moved to watched successfully"
+  },
+  "months": {
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec"
+  },
+  "days": {
+    "sun": "Sun",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat"
+  }
+}

@@ -39,23 +39,25 @@ export default function AllMovies({ films, onEditFilm, onDeleteFilm }) {
               </div>
 
               {/* Content */}
-              <div className="space-y-3 pr-16 sm:pr-20">
-                  <div>
-                    <h4 className="text-lg sm:text-xl font-bold mb-1 break-words">{film.title}</h4>
-                    <div className="flex items-center gap-3 text-sm text-gray-400 flex-wrap">
-                      {film.year && <span>{film.year}</span>}
-                      <span>•</span>
-                      <span>{format(new Date(film.watchDate), 'MMM d, yyyy')}</span>
+              <div className="space-y-3">
+                  <div className="pr-16 sm:pr-20">
+                    <div>
+                      <h4 className="text-lg sm:text-xl font-bold mb-1 break-words">{film.title}</h4>
+                      <div className="flex items-center gap-3 text-sm text-gray-400 flex-wrap">
+                        {film.year && <span>{film.year}</span>}
+                        <span>•</span>
+                        <span>{format(new Date(film.watchDate), 'MMM d, yyyy')}</span>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Rating */}
-                  {film.rating > 0 && (
-                    <div className="flex items-center gap-3">
-                      <StarRating rating={film.rating} readonly size="sm" />
-                      <span className="text-yellow-400 font-bold text-sm sm:text-base">{film.rating}/10</span>
-                    </div>
-                  )}
+                    {/* Rating */}
+                    {film.rating > 0 && (
+                      <div className="flex items-center gap-3">
+                        <StarRating rating={film.rating} readonly size="sm" />
+                        <span className="text-yellow-400 font-bold text-sm sm:text-base">{film.rating}/10</span>
+                      </div>
+                    )}
+                  </div>
 
                 {/* Note */}
                 {film.note && (

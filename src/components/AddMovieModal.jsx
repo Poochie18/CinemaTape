@@ -3,8 +3,10 @@ import { format } from 'date-fns';
 import { Calendar as CalendarIcon, Save } from 'lucide-react';
 import Modal from './Modal';
 import StarRating from './StarRating';
+import { useTranslation } from 'react-i18next';
 
 export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = null, editingFilm = null, isAddingToWatchLater = false }) {
+  const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
   const [watchDate, setWatchDate] = useState(format(selectedDate || new Date(), 'yyyy-MM-dd'));
@@ -57,23 +59,23 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={isAddingToWatchLater ? "Add to Later" : (editingFilm ? "Edit Movie" : "Add Movie")} size="md">
+    <Modal isOpen={isOpen} onClose={onClose} title={isAddingToWatchLater ? t('addMovie.addToLater') : (editingFilm ? t('addMovie.editMovie') : t('addMovie.addMovie'))} size="md">
       <div className="space-y-6">
         {/* Movie Title */}
         <div>
-          <label className="block text-sm font-medium mb-2">Movie Title *</label>
+          <label className="block text-sm font-medium mb-2">{t('addMovie.movieTitle')} {t('addMovie.required')}</label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter movie title..."
+            placeholder={t('addMovie.movieTitlePlaceholder')}
             className="input-field"
           />
         </div>
 
         {/* Year */}
         <div>
-          <label className="block text-sm font-medium mb-2">Year</label>
+          <label className="block text-sm font-medium mb-2">{t('addMovie.year')}</label>
           <input
             type="number"
             value={year}
@@ -88,7 +90,7 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
         {/* Rating */}
         <div>
           <label className="block text-sm font-medium mb-2">
-            {isAddingToWatchLater ? 'Priority (0-10)' : 'Rating (0-10)'}
+            {isAddingToWatchLater ? t('addMovie.priority') : t('addMovie.rating')}
           </label>
           <div className="flex flex-wrap items-center gap-2 sm:gap-4">
             <StarRating rating={rating} onRatingChange={setRating} />
@@ -101,7 +103,7 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
           <div>
             <label className="block text-sm font-medium mb-2">
               <CalendarIcon className="w-4 h-4 inline mr-2" />
-              Watch Date
+              {t('addMovie.watchDate')}
             </label>
             <input
               type="date"
@@ -117,7 +119,7 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
         {!isAddingToWatchLater && (
           <div>
             <label className="block text-sm font-medium mb-2">
-              Notes & Thoughts
+              {t('addMovie.notes')}
             </label>
             <textarea
               value={note}
@@ -126,7 +128,7 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
                 e.target.style.height = 'auto';
                 e.target.style.height = e.target.scrollHeight + 'px';
               }}
-              placeholder="Your thoughts about the movie..."
+              placeholder={t('addMovie.notesPlaceholder')}
               className="input-field resize-none"
               rows={1}
             />
@@ -136,7 +138,7 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
         {/* Actions */}
         <div className="flex flex-col-reverse sm:flex-row gap-3 justify-end">
           <button onClick={onClose} className="btn-secondary w-full sm:w-auto">
-            Cancel
+            {t('addMovie.cancel')}
           </button>
           <button 
             onClick={handleSave} 
@@ -144,7 +146,7 @@ export default function AddMovieModal({ isOpen, onClose, onSave, selectedDate = 
             disabled={!title.trim()}
           >
             <Save className="w-5 h-5" />
-            Save
+            {t('addMovie.save')}
           </button>
         </div>
       </div>
