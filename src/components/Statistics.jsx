@@ -1,9 +1,13 @@
 import { useMemo, useState } from 'react';
 import { format, startOfYear, endOfYear, eachMonthOfInterval, isSameMonth, startOfMonth, endOfMonth, differenceInDays, parseISO, eachDayOfInterval, getDay } from 'date-fns';
+import { enUS, uk } from 'date-fns/locale';
 import { Film, Star, TrendingUp, Award, ChevronLeft, ChevronRight, Flame, Calendar, Clock, TrendingDown } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 export default function Statistics({ films = [] }) {
+  const { t, i18n } = useTranslation();
+  const dateLocale = i18n.language === 'uk' ? uk : enUS;
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
   const availableYears = useMemo(() => {
@@ -82,7 +86,7 @@ export default function Statistics({ films = [] }) {
         isSameMonth(new Date(film.watchDate), month)
       );
       return {
-        month: format(month, 'MMM'),
+        month: format(month, 'MMM', { locale: dateLocale }),
         count: filmsInMonth.length,
       };
     });
@@ -97,7 +101,9 @@ export default function Statistics({ films = [] }) {
     }).reverse();
 
     // Day of week stats
-    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const daysOfWeek = i18n.language === 'uk' 
+      ? ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
+      : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const dayOfWeekStats = daysOfWeek.map((day, index) => ({
       day,
       count: watchedFilms.filter(f => getDay(new Date(f.watchDate)) === index).length
@@ -144,9 +150,9 @@ export default function Statistics({ films = [] }) {
       <div className="w-full max-w-6xl mx-auto">
         <div className="glass rounded-xl p-12 text-center">
           <TrendingUp className="w-16 h-16 mx-auto text-gray-600 mb-4" />
-          <h3 className="text-xl font-semibold mb-2">No statistics data</h3>
+          <h3 className="text-xl font-semibold mb-2">{t('common.noData')}</h3>
           <p className="text-gray-400">
-            Start adding watched movies to see statistics
+            {t('statistics.noMoviesYet')}
           </p>
         </div>
       </div>
@@ -157,8 +163,8 @@ export default function Statistics({ films = [] }) {
     <div className="w-full max-w-6xl mx-auto space-y-6 px-4 sm:px-6">
       {/* Header */}
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-2">Statistics</h2>
-        <p className="text-sm sm:text-base text-gray-400">Your cinematic habits and achievements</p>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-2">{t('statistics.title')}</h2>
+        <p className="text-sm sm:text-base text-gray-400">{t('statistics.subtitle')}</p>
       </div>
 
       {/* Key Stats */}
@@ -170,7 +176,7 @@ export default function Statistics({ films = [] }) {
         >
           <Film className="w-8 h-8 mx-auto mb-2 text-gray-400" />
           <div className="text-3xl font-bold mb-1">{stats.total}</div>
-          <div className="text-sm text-gray-400">Total Movies</div>
+          <div className="text-sm text-gray-400">{t('statistics.totalWatched')}</div>
         </motion.div>
 
         <motion.div
@@ -181,7 +187,7 @@ export default function Statistics({ films = [] }) {
         >
           <Flame className="w-8 h-8 mx-auto mb-2 text-orange-400" />
           <div className="text-3xl font-bold mb-1">{stats.longestStreak}</div>
-          <div className="text-sm text-gray-400">Longest Streak</div>
+          <div className="text-sm text-gray-400">{t('statistics.longestStreak')}</div>
         </motion.div>
 
         <motion.div
@@ -195,7 +201,7 @@ export default function Statistics({ films = [] }) {
             {stats.avgRating > 0 ? stats.avgRating : '-'}
           </div>
           <div className="text-sm text-gray-400">
-            Average Rating
+            {t('statistics.averageRating')}
             {stats.ratedCount > 0 && (
               <span className="block text-xs mt-1">({stats.ratedCount} rated)</span>
             )}
@@ -210,7 +216,7 @@ export default function Statistics({ films = [] }) {
         >
           <Award className="w-8 h-8 mx-auto mb-2 text-green-400" />
           <div className="text-3xl font-bold mb-1">{stats.mostActiveDay?.[1] || 0}</div>
-          <div className="text-sm text-gray-400">Most in a Day</div>
+          <div className="text-sm text-gray-400">{t('statistics.mostActiveDay')}</div>
         </motion.div>
       </div>
 
@@ -224,7 +230,7 @@ export default function Statistics({ films = [] }) {
         {/* Year Selector */}
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-xl font-bold">
-            Movies by Month
+            {t('statistics.monthlyActivity')}
           </h3>
           <div className="flex items-center gap-2">
             <button
@@ -292,7 +298,7 @@ export default function Statistics({ films = [] }) {
         >
           <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
             <TrendingUp className="w-6 h-6 text-green-400" />
-            Top 5 by Rating
+            {t('statistics.bestRated')}
           </h3>
           <div className="space-y-3">
             {stats.bestRated.map((film, index) => (
