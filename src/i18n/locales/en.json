@@ -1,7 +1,8 @@
 {
   "app": {
     "name": "CinemaTape",
-    "tagline": "Your personal cinema diary"
+    "tagline": "Your personal cinema diary",
+    "locale": "en-US"
   },
   "nav": {
     "calendar": "Calendar",
@@ -73,11 +74,13 @@
     "noMoviesYet": "No movies watched yet. Start adding movies to see statistics!",
     "totalWatched": "Total Watched",
     "thisYear": "This Year",
+    "filmsThisYear": "Films This Year",
     "averageRating": "Average Rating",
     "longestStreak": "Longest Streak",
     "days": "days",
     "bestRated": "Top 5 by Rating",
     "monthlyActivity": "Movies by Month",
+    "monthlyRatings": "Average Ratings by Month",
     "previousYear": "Previous Year",
     "nextYear": "Next Year",
     "ratingDistribution": "Rating Distribution",

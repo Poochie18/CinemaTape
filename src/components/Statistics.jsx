@@ -75,7 +75,7 @@ export default function Statistics({ films = [] }) {
     });
     const mostActiveDay = Object.entries(daysCounts).sort((a, b) => b[1] - a[1])[0];
 
-    // Monthly stats for selected year
+    // Monthly stats for selected year with average rating
     const months = eachMonthOfInterval({
       start: startOfYear(new Date(selectedYear, 0, 1)),
       end: endOfYear(new Date(selectedYear, 0, 1)),
@@ -85,9 +85,14 @@ export default function Statistics({ films = [] }) {
       const filmsInMonth = filmsSelectedYear.filter((film) =>
         isSameMonth(new Date(film.watchDate), month)
       );
+      const ratedFilmsInMonth = filmsInMonth.filter(f => f.rating > 0);
+      const avgRatingInMonth = ratedFilmsInMonth.length > 0
+        ? (ratedFilmsInMonth.reduce((sum, f) => sum + f.rating, 0) / ratedFilmsInMonth.length).toFixed(1)
+        : 0;
       return {
         month: format(month, 'MMM', { locale: dateLocale }),
         count: filmsInMonth.length,
+        avgRating: avgRatingInMonth,
       };
     });
 
@@ -161,12 +166,6 @@ export default function Statistics({ films = [] }) {
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-6 px-4 sm:px-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-2">{t('statistics.title')}</h2>
-        <p className="text-sm sm:text-base text-gray-400">{t('statistics.subtitle')}</p>
-      </div>
-
       {/* Key Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <motion.div
@@ -422,26 +421,6 @@ export default function Statistics({ films = [] }) {
         </div>
       </motion.div>
 
-      {/* Most Active Day */}
-      {stats.mostActiveDay && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9 }}
-          className="glass rounded-xl p-6 text-center"
-        >
-          <Award className="w-12 h-12 mx-auto mb-3 text-yellow-400" />
-          <h3 className="text-xl font-bold mb-2">Most Active Day</h3>
-          <p className="text-gray-400">
-            <span className="text-2xl font-bold text-gray-300">
-              {format(new Date(stats.mostActiveDay[0]), 'd MMMM yyyy')}
-            </span>
-            <br />
-            Watched {stats.mostActiveDay[1]} {stats.mostActiveDay[1] === 1 ? 'movie' : 'movies'}
-          </p>
-        </motion.div>
-      )}
-
       {/* Yearly Comparison */}
       {stats.yearlyComparison.length > 1 && (
         <motion.div
@@ -476,6 +455,69 @@ export default function Statistics({ films = [] }) {
           </div>
         </motion.div>
       )}
+
+      {/* Monthly Average Ratings */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.1 }}
+        className="glass rounded-xl p-6"
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold">
+            {t('statistics.monthlyRatings')}
+          </h3>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                const currentIndex = availableYears.indexOf(selectedYear);
+                if (currentIndex < availableYears.length - 1) {
+                  setSelectedYear(availableYears[currentIndex + 1]);
+                }
+              }}
+              disabled={availableYears.indexOf(selectedYear) === availableYears.length - 1}
+              className="p-2 glass-hover rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <span className="text-lg font-bold px-4">{selectedYear}</span>
+            <button
+              onClick={() => {
+                const currentIndex = availableYears.indexOf(selectedYear);
+                if (currentIndex > 0) {
+                  setSelectedYear(availableYears[currentIndex - 1]);
+                }
+              }}
+              disabled={availableYears.indexOf(selectedYear) === 0}
+              className="p-2 glass-hover rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {stats.monthlyStats.map((monthStat, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1.2 + index * 0.05 }}
+              className="bg-gray-800/50 rounded-lg p-4 text-center hover:bg-gray-800/70 transition-colors"
+            >
+              <div className="text-sm text-gray-400 mb-2">{monthStat.month}</div>
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <Star className="w-4 h-4 text-yellow-400" />
+                <div className="text-2xl font-bold">
+                  {monthStat.avgRating > 0 ? monthStat.avgRating : '-'}
+                </div>
+              </div>
+              <div className="text-xs text-gray-500">
+                {monthStat.count} {monthStat.count === 1 ? t('watchLater.film') : t('watchLater.films')}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
     </div>
   );
 }

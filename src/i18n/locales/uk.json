@@ -1,7 +1,8 @@
 {
   "app": {
     "name": "CinemaTape",
-    "tagline": "Ваш особистий кінощоденник"
+    "tagline": "Ваш особистий кінощоденник",
+    "locale": "uk-UA"
   },
   "nav": {
     "calendar": "Календар",
@@ -73,11 +74,13 @@
     "noMoviesYet": "Ще не переглянуто жодного фільму. Почніть додавати фільми, щоб побачити статистику!",
     "totalWatched": "Всього Переглянуто",
     "thisYear": "Цього Року",
-    "averageRating": "Середній Рейтинг",
-    "longestStreak": "Найдовша Серія",
+    "filmsThisYear": "Фільмів цього року",
+    "averageRating": "Середній рейтинг",
+    "longestStreak": "Найдовша серія",
     "days": "днів",
-    "bestRated": "Топ 5 за Рейтингом",
-    "monthlyActivity": "Фільми за Місяць",
+    "bestRated": "Топ-5 за рейтингом",
+    "monthlyActivity": "Фільми за місяцями",
+    "monthlyRatings": "Середній рейтинг за місяцями",
     "previousYear": "Попередній Рік",
     "nextYear": "Наступний Рік",
     "ratingDistribution": "Розподіл Рейтингу",
