@@ -63,7 +63,10 @@ export function useLanguage(userId) {
 
       if (error) throw error;
 
-      toast.success(language === 'en' ? 'Language changed to English' : 'Мову змінено на українську');
+      toast.success(
+        language === 'en' ? 'Language changed to English' : 'Мову змінено на українську',
+        { duration: 2000 }
+      );
     } catch (error) {
       console.error('Error saving language preference:', error);
       toast.error('Failed to save language preference');

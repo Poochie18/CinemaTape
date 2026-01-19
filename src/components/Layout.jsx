@@ -148,13 +148,13 @@ export default function Layout() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex gap-1 sm:gap-2 justify-center overflow-x-auto">
+          <nav className="flex gap-1 sm:gap-2 justify-center flex-wrap">
             {navItems.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) => `
-                  flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap flex-shrink-0
+                  flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 rounded-lg font-medium transition-all whitespace-nowrap
                   ${isActive
                     ? 'bg-gray-700 text-white'
                     : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
@@ -162,7 +162,7 @@ export default function Layout() {
                 `}
               >
                 <item.icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span className="text-xs sm:text-sm md:text-base">{item.label}</span>
+                <span className="text-xs sm:text-sm">{item.label}</span>
               </NavLink>
             ))}
           </nav>

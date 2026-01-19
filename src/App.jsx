@@ -117,7 +117,6 @@ function App() {
         position="top-center"
         toastOptions={{
           duration: 3000,
-          dismissible: true,
           style: {
             background: '#1f2937',
             color: '#f3f4f6',
