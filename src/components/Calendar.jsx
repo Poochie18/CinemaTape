@@ -109,17 +109,30 @@ export default function Calendar({ selectedDate, onSelectDate, watchedFilms }) {
                   </span>
                   
                   {hasFilms && (
-                    <div className="flex gap-0.5 mt-1 flex-wrap justify-center">
-                      {filmsForDay.slice(0, 3).map((_, i) => (
-                        <div
-                          key={i}
-                          className={`w-1 h-1 rounded-full ${
-                            isSelected ? 'bg-white' : 'bg-gray-400'
-                          }`}
-                        />
-                      ))}
-                      {filmsForDay.length > 3 && (
-                        <span className="text-[10px] ml-0.5">+{filmsForDay.length - 3}</span>
+                    <div className="flex flex-col gap-0.5 mt-1 items-center">
+                      {/* First row - up to 4 dots */}
+                      <div className="flex gap-0.5">
+                        {filmsForDay.slice(0, 4).map((_, i) => (
+                          <div
+                            key={i}
+                            className={`w-1 h-1 rounded-full ${
+                              isSelected ? 'bg-white' : 'bg-gray-400'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      {/* Second row - remaining dots (5-8) */}
+                      {filmsForDay.length > 4 && (
+                        <div className="flex gap-0.5">
+                          {filmsForDay.slice(4, 8).map((_, i) => (
+                            <div
+                              key={i}
+                              className={`w-1 h-1 rounded-full ${
+                                isSelected ? 'bg-white' : 'bg-gray-400'
+                              }`}
+                            />
+                          ))}
+                        </div>
                       )}
                     </div>
                   )}
