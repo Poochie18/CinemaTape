@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import WatchLater from '../components/WatchLater';
 import AddMovieModal from '../components/AddMovieModal';
 import MoveToWatchedModal from '../components/MoveToWatchedModal';
-import { Plus, SortAsc } from 'lucide-react';
+import { Plus, SortAsc, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
@@ -18,6 +18,7 @@ export default function WatchLaterPage({
   const [movingFilm, setMovingFilm] = useState(null);
   const [showMoveModal, setShowMoveModal] = useState(false);
   const [editingFilm, setEditingFilm] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('rating'); // rating, title, year
   const [sortDirection, setSortDirection] = useState('desc'); // asc, desc
 
@@ -32,10 +33,21 @@ export default function WatchLaterPage({
     }
   };
 
-  // Sort films
-  const sortedFilms = useMemo(() => {
-    const filmsCopy = [...watchLaterFilms];
-    filmsCopy.sort((a, b) => {
+  // Sort and filter films
+  const filteredAndSortedFilms = useMemo(() => {
+    let films = [...watchLaterFilms];
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      films = films.filter(film => 
+        film.title.toLowerCase().includes(query) ||
+        film.year?.toString().includes(query)
+      );
+    }
+
+    // Sort
+    films.sort((a, b) => {
       let comparison = 0;
       switch (sortBy) {
         case 'rating':
@@ -52,8 +64,9 @@ export default function WatchLaterPage({
       }
       return sortDirection === 'asc' ? -comparison : comparison;
     });
-    return filmsCopy;
-  }, [watchLaterFilms, sortBy, sortDirection]);
+
+    return films;
+  }, [watchLaterFilms, searchQuery, sortBy, sortDirection]);
 
   const handleMarkAsWatched = (film) => {
     setMovingFilm(film);
@@ -91,8 +104,21 @@ export default function WatchLaterPage({
         </p>
       </div>
 
-      {/* Sort Buttons */}
-      <div className="glass rounded-xl p-4">
+      {/* Search and Sort */}
+      <div className="glass rounded-xl p-4 space-y-4">
+        {/* Search */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={t('allMovies.search')}
+            className="w-full pl-10 pr-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg focus:outline-none focus:border-gray-600 transition-colors"
+          />
+        </div>
+
+        {/* Sort Buttons */}
         <div className="flex items-center gap-2 flex-wrap">
           <SortAsc className="w-5 h-5 text-gray-400" />
           <span className="text-sm text-gray-400">{t('allMovies.sortBy')}:</span>
@@ -148,7 +174,7 @@ export default function WatchLaterPage({
       )}
 
       <WatchLater
-        films={sortedFilms}
+        films={filteredAndSortedFilms}
         onMarkAsWatched={handleMarkAsWatched}
         onDelete={onDeleteFromWatchLater}
         onEdit={handleEdit}
