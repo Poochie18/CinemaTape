@@ -43,11 +43,15 @@
     "film": "film",
     "films": "films",
     "addFilm": "Add Film",
+    "randomFilm": "Random",
     "markAsWatched": "Mark as Watched",
     "sortHighToLow": "High → Low",
     "sortLowToHigh": "Low → High",
     "emptyState": "Your watch later list is empty",
-    "emptyStateDesc": "Add movies you want to watch later"
+    "emptyStateDesc": "Add movies you want to watch later",
+    "randomMovie": "Random Movie",
+    "randomMovieDesc": "Here's a random movie from your watch later list",
+    "noFilmsForRandom": "No films in your watch later list"
   },
   "allMovies": {
     "title": "All Movies",

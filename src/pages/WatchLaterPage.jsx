@@ -2,7 +2,8 @@ import { useState, useMemo } from 'react';
 import WatchLater from '../components/WatchLater';
 import AddMovieModal from '../components/AddMovieModal';
 import MoveToWatchedModal from '../components/MoveToWatchedModal';
-import { Plus, SortAsc, Search } from 'lucide-react';
+import RandomMovieModal from '../components/RandomMovieModal';
+import { Plus, SortAsc, Search, Shuffle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
@@ -21,6 +22,8 @@ export default function WatchLaterPage({
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('rating'); // rating, title, year
   const [sortDirection, setSortDirection] = useState('desc'); // asc, desc
+  const [showRandomModal, setShowRandomModal] = useState(false);
+  const [randomFilm, setRandomFilm] = useState(null);
 
   const handleSortClick = (field) => {
     if (sortBy === field) {
@@ -94,6 +97,14 @@ export default function WatchLaterPage({
     setShowAddModal(false);
   };
 
+  const handleRandomFilm = () => {
+    if (watchLaterFilms.length === 0) return;
+    
+    const randomIndex = Math.floor(Math.random() * watchLaterFilms.length);
+    setRandomFilm(watchLaterFilms[randomIndex]);
+    setShowRandomModal(true);
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 space-y-6">
       {/* Header */}
@@ -161,15 +172,26 @@ export default function WatchLaterPage({
           <h3 className="text-xl sm:text-2xl font-bold">
             {new Date().toLocaleDateString(t('app.locale'), { day: 'numeric', month: 'long', year: 'numeric' })}
           </h3>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowAddModal(true)}
-            className="btn-primary flex items-center gap-2 w-full sm:w-auto justify-center"
-          >
-            <Plus className="w-5 h-5" />
-            {t('watchLater.addFilm')}
-          </motion.button>
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleRandomFilm}
+              className="btn-secondary flex items-center gap-2 w-full sm:w-auto justify-center"
+            >
+              <Shuffle className="w-5 h-5" />
+              {t('watchLater.randomFilm')}
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setShowAddModal(true)}
+              className="btn-primary flex items-center gap-2 w-full sm:w-auto justify-center"
+            >
+              <Plus className="w-5 h-5" />
+              {t('watchLater.addFilm')}
+            </motion.button>
+          </div>
         </div>
       )}
 
@@ -202,6 +224,17 @@ export default function WatchLaterPage({
           }}
           onSave={handleMove}
           movie={movingFilm}
+        />
+      )}
+
+      {showRandomModal && randomFilm && (
+        <RandomMovieModal
+          isOpen={showRandomModal}
+          onClose={() => {
+            setShowRandomModal(false);
+            setRandomFilm(null);
+          }}
+          movie={randomFilm}
         />
       )}
     </div>
