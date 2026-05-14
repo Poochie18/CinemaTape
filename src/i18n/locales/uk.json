@@ -92,7 +92,11 @@
     "mostActiveDay": "Найбільше за День",
     "moviesWatched": "фільмів переглянуто",
     "githubStyle": "Стиль GitHub",
-    "viewDetails": "Переглянути Деталі"
+    "viewDetails": "Переглянути Деталі",
+    "yearProgress": "Прогрес року",
+    "filmsWatched": "фільмів переглянуто",
+    "daysElapsed": "днів минуло",
+    "daysTotal": "днів у році"
   },
   "addMovie": {
     "addMovie": "Додати Фільм",

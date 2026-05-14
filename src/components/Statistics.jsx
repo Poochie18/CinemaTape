@@ -134,10 +134,21 @@ export default function Statistics({ films = [] }) {
       .sort((a, b) => a.rating - b.rating)
       .slice(0, 5);
 
+    // Year progress
+    const today = new Date();
+    const currentYearStart = new Date(currentYear, 0, 1);
+    const daysElapsed = differenceInDays(today, currentYearStart) + 1;
+    const isLeapYear = (currentYear % 4 === 0 && currentYear % 100 !== 0) || currentYear % 400 === 0;
+    const daysInYear = isLeapYear ? 366 : 365;
+
     return {
       total: watchedFilms.length,
       longestStreak: maxStreak,
       selectedYearCount: filmsSelectedYear.length,
+      filmsThisYearCount: filmsThisYear.length,
+      daysElapsed,
+      daysInYear,
+      currentYear,
       avgRating,
       ratedCount,
       bestRated,
@@ -218,6 +229,48 @@ export default function Statistics({ films = [] }) {
           <div className="text-sm text-gray-400">{t('statistics.mostActiveDay')}</div>
         </motion.div>
       </div>
+
+      {/* Year Progress Bar */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35 }}
+        className="glass rounded-xl p-6"
+      >
+        <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+          <Calendar className="w-6 h-6 text-yellow-400" />
+          {t('statistics.yearProgress')} {stats.currentYear}
+        </h3>
+        <div className="relative h-8 bg-gray-800/50 rounded-full overflow-hidden">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${Math.min((stats.daysElapsed / stats.daysInYear) * 100, 100)}%` }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className="absolute top-0 left-0 h-full bg-yellow-500/50 rounded-full"
+          />
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${Math.min((stats.filmsThisYearCount / stats.daysInYear) * 100, 100)}%` }}
+            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+            className="absolute top-0 left-0 h-full bg-green-500/70 rounded-full"
+          />
+        </div>
+        <div className="flex flex-wrap items-center justify-between mt-3 gap-2 text-sm">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-green-500/70 flex-shrink-0" />
+            <span className="text-gray-300">
+              <span className="font-bold text-white">{stats.filmsThisYearCount}</span> {t('statistics.filmsWatched')}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-yellow-500/50 flex-shrink-0" />
+            <span className="text-gray-300">
+              <span className="font-bold text-white">{stats.daysElapsed}</span> {t('statistics.daysElapsed')}
+            </span>
+          </div>
+          <span className="text-gray-500">/ {stats.daysInYear} {t('statistics.daysTotal')}</span>
+        </div>
+      </motion.div>
 
       {/* Monthly Chart */}
       <motion.div

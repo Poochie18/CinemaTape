@@ -92,7 +92,11 @@
     "mostActiveDay": "Most in a Day",
     "moviesWatched": "movies watched",
     "githubStyle": "GitHub Style",
-    "viewDetails": "View Details"
+    "viewDetails": "View Details",
+    "yearProgress": "Year Progress",
+    "filmsWatched": "films watched",
+    "daysElapsed": "days elapsed",
+    "daysTotal": "days total"
   },
   "addMovie": {
     "addMovie": "Add Movie",
